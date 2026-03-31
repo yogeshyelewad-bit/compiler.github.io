@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta
+    name="description"
+    content="YBY Compiler is a browser-based Python compiler with human-friendly error explanations, code improvements, and Google AdSense support."
+  >
+  <title>YBY Compiler | Run Python Smoothly</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="noise"></div>
+
+  <div class="site-shell">
+    <header class="hero" id="home">
+      <nav class="topbar">
+        <a class="brand" href="#home" aria-label="YBY Compiler home">
+          <span class="brand-mark">Y</span>
+          <span class="brand-copy">
+            <strong>YBY Compiler</strong>
+            <small>Python in your browser</small>
+          </span>
+        </a>
+
+        <div class="nav-links">
+          <a href="#compiler">Compiler</a>
+          <a href="#features">Features</a>
+          <a href="#adsense">AdSense</a>
+        </div>
+      </nav>
+
+      <section class="hero-grid">
+        <div class="hero-copy reveal">
+          <p class="eyebrow">Fast browser Python experience</p>
+          <h1>Write Python, run it instantly, and understand mistakes in plain English.</h1>
+          <p class="hero-text">
+            YBY Compiler runs Python directly in the browser with Pyodide, shows clean output,
+            translates technical errors into human language, and gives improvement tips for beginners.
+          </p>
+
+          <div class="hero-actions">
+            <a class="button button-primary" href="#compiler">Start coding</a>
+            <button class="button button-secondary" id="loadExampleHero" type="button">Load example</button>
+          </div>
+
+          <ul class="hero-points">
+            <li>No backend needed for GitHub Pages</li>
+            <li>Human-friendly debugging help</li>
+            <li>AdSense placeholders already included</li>
+          </ul>
+        </div>
+
+        <div class="hero-card reveal" aria-hidden="true">
+          <div class="mini-terminal">
+            <div class="mini-top">
+              <span></span><span></span><span></span>
+            </div>
+            <div class="mini-code">
+              <p><span class="prompt">&gt;&gt;&gt;</span> numbers = [3, 5, 8]</p>
+              <p><span class="prompt">&gt;&gt;&gt;</span> print(sum(numbers))</p>
+              <p class="success">16</p>
+              <p class="hint-line">Friendly guide: Your code ran correctly.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </header>
+
+    <main>
+      <section class="compiler-section reveal" id="compiler">
+        <div class="section-heading">
+          <p class="eyebrow">Compiler</p>
+          <h2>Browser-based Python playground</h2>
+          <p class="section-text">
+            This runs Python in the browser. It works great for learning, practice, and most pure-Python scripts.
+          </p>
+        </div>
+
+        <div class="workspace">
+          <div class="editor-panel card">
+            <div class="panel-header">
+              <div>
+                <p class="panel-kicker">Editor</p>
+                <h3>main.py</h3>
+              </div>
+              <span class="status-pill" id="runtimeStatus">Loading Python runtime...</span>
+            </div>
+
+            <label class="sr-only" for="codeInput">Python code editor</label>
+            <textarea id="codeInput" spellcheck="false"></textarea>
+
+            <div class="toolbar">
+              <button class="button button-primary" id="runButton" type="button" disabled>Run Python</button>
+              <button class="button button-secondary" id="clearButton" type="button">Clear output</button>
+              <button class="button button-secondary" id="exampleButton" type="button">Use sample code</button>
+            </div>
+          </div>
+
+          <div class="results-stack">
+            <section class="card output-panel">
+              <div class="panel-header">
+                <div>
+                  <p class="panel-kicker">Output</p>
+                  <h3>Program result</h3>
+                </div>
+              </div>
+              <pre id="outputConsole">Python runtime is loading. Please wait...</pre>
+            </section>
+
+            <section class="card insight-panel">
+              <div class="panel-header">
+                <div>
+                  <p class="panel-kicker">Human explanation</p>
+                  <h3>Error and improvement guide</h3>
+                </div>
+              </div>
+              <div id="humanMessage" class="message-box neutral">
+                Run code to get a plain-English explanation here.
+              </div>
+              <ul id="improvementList" class="improvement-list">
+                <li>Improvement tips will appear here after running the code.</li>
+              </ul>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section class="ad-strip reveal">
+        <div class="card ad-card">
+          <div>
+            <p class="eyebrow">Sponsored space</p>
+            <h2>Top AdSense area</h2>
+            <p class="section-text">
+              Replace the placeholder publisher and slot IDs with your real AdSense values before publishing.
+            </p>
+          </div>
+          <ins class="adsbygoogle"
+            style="display:block"
+            data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+            data-ad-slot="1234567890"
+            data-ad-format="auto"
+            data-full-width-responsive="true"></ins>
+        </div>
+      </section>
+
+      <section class="feature-section reveal" id="features">
+        <div class="section-heading">
+          <p class="eyebrow">Why it feels smooth</p>
+          <h2>Designed for learners, not just experienced developers.</h2>
+        </div>
+
+        <div class="feature-grid">
+          <article class="card feature-card">
+            <h3>Runs in the browser</h3>
+            <p>No server setup is required. Host it on GitHub Pages and users can start coding immediately.</p>
+          </article>
+          <article class="card feature-card">
+            <h3>Explains errors simply</h3>
+            <p>Syntax, name, indentation, type, and runtime errors are translated into clearer everyday language.</p>
+          </article>
+          <article class="card feature-card">
+            <h3>Gives useful improvements</h3>
+            <p>The app checks for beginner-friendly code quality suggestions like naming, comments, and safer patterns.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="adsense-section reveal" id="adsense">
+        <div class="adsense-grid">
+          <div class="card adsense-info">
+            <p class="eyebrow">AdSense setup</p>
+            <h2>Ready for your monetization details</h2>
+            <ul class="check-list">
+              <li>Replace `ca-pub-XXXXXXXXXXXXXXXX` with your real publisher ID.</li>
+              <li>Replace `1234567890` with your actual ad slot IDs.</li>
+              <li>Update `ads.txt` with your publisher information.</li>
+              <li>Deploy the repo to GitHub Pages.</li>
+            </ul>
+          </div>
+
+          <div class="card ad-card side-ad">
+            <p class="panel-kicker">Sidebar ad</p>
+            <h3>Responsive display ad</h3>
+            <ins class="adsbygoogle"
+              style="display:block"
+              data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+              data-ad-slot="1234567890"
+              data-ad-format="auto"
+              data-full-width-responsive="true"></ins>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script defer src="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
