@@ -21,6 +21,7 @@ const runButton = document.getElementById("runButton");
 const clearButton = document.getElementById("clearButton");
 const exampleButton = document.getElementById("exampleButton");
 const loadExampleHero = document.getElementById("loadExampleHero");
+const copyButton = document.getElementById("copyButton");
 
 let pyodide;
 let runtimeReady = false;
@@ -247,10 +248,25 @@ function loadExample() {
   ]);
 }
 
+async function copyCode() {
+  try {
+    await navigator.clipboard.writeText(codeInput.value);
+    setHumanMessage("Code copied to your clipboard.", "success");
+    setImprovements([
+      "Paste the code anywhere you want.",
+      "Keep editing here and run it again whenever you need.",
+      "Use sample code if you want a fresh starting point."
+    ]);
+  } catch (error) {
+    setHumanMessage("Copy failed in this browser. You can still select the code manually.", "error");
+  }
+}
+
 runButton.addEventListener("click", runCode);
 clearButton.addEventListener("click", clearOutput);
 exampleButton.addEventListener("click", loadExample);
 loadExampleHero.addEventListener("click", loadExample);
+copyButton.addEventListener("click", copyCode);
 
 window.addEventListener("load", () => {
   initializeRuntime();
