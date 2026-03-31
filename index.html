@@ -49,6 +49,12 @@
             <button class="button button-secondary" id="loadExampleHero" type="button">Load example</button>
           </div>
 
+          <div class="hero-badges">
+            <span class="badge">Beginner friendly</span>
+            <span class="badge">Runs on GitHub Pages</span>
+            <span class="badge">Human-language feedback</span>
+          </div>
+
           <ul class="hero-points">
             <li>No backend needed for GitHub Pages</li>
             <li>Human-friendly debugging help</li>
@@ -82,6 +88,30 @@
           </p>
         </div>
 
+        <div class="quick-guide card">
+          <div class="guide-step">
+            <span>1</span>
+            <div>
+              <strong>Write or paste Python</strong>
+              <p>Use the editor below for your script or homework practice.</p>
+            </div>
+          </div>
+          <div class="guide-step">
+            <span>2</span>
+            <div>
+              <strong>Run it instantly</strong>
+              <p>Click the run button and the browser executes the code for you.</p>
+            </div>
+          </div>
+          <div class="guide-step">
+            <span>3</span>
+            <div>
+              <strong>Understand the result</strong>
+              <p>Read output, errors, and improvement tips in simple language.</p>
+            </div>
+          </div>
+        </div>
+
         <div class="workspace">
           <div class="editor-panel card">
             <div class="panel-header">
@@ -99,6 +129,7 @@
               <button class="button button-primary" id="runButton" type="button" disabled>Run Python</button>
               <button class="button button-secondary" id="clearButton" type="button">Clear output</button>
               <button class="button button-secondary" id="exampleButton" type="button">Use sample code</button>
+              <button class="button button-secondary" id="copyButton" type="button">Copy code</button>
             </div>
           </div>
 
@@ -110,6 +141,7 @@
                   <h3>Program result</h3>
                 </div>
               </div>
+              <div class="panel-note">Console output and Python errors appear here.</div>
               <pre id="outputConsole">Python runtime is loading. Please wait...</pre>
             </section>
 
@@ -120,6 +152,7 @@
                   <h3>Error and improvement guide</h3>
                 </div>
               </div>
+              <div class="panel-note">A clearer explanation is shown here after each run.</div>
               <div id="humanMessage" class="message-box neutral">
                 Run code to get a plain-English explanation here.
               </div>
