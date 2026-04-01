@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>YBY Compiler Blog - Learn Python</title>
+  <meta name="description" content="Learn Python with tutorials, examples, and projects.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+<div class="site-shell">
+
+  <h1 style="text-align:center;">📘 Python Tutorials</h1>
+
+  <!-- 🔍 SEARCH BAR -->
+  <input type="text" id="searchInput" placeholder="Search tutorials..."
+    style="width:100%;padding:12px;border-radius:10px;margin:20px 0;">
+
+  <!-- BLOG GRID -->
+  <div class="blog-grid" id="blogGrid">
+
+    <a href="learn-python.html" class="blog-card">
+      <img src="https://source.unsplash.com/400x200/?python" />
+      <h3>Learn Python</h3>
+    </a>
+
+    <a href="python-loops.html" class="blog-card">
+      <img src="https://source.unsplash.com/400x200/?coding" />
+      <h3>Python Loops</h3>
+    </a>
+
+    <a href="python-functions.html" class="blog-card">
+      <img src="https://source.unsplash.com/400x200/?programming" />
+      <h3>Python Functions</h3>
+    </a>
+
+    <a href="python-errors.html" class="blog-card">
+      <img src="https://source.unsplash.com/400x200/?error" />
+      <h3>Python Errors</h3>
+    </a>
+
+  </div>
+
+</div>
+
+<script>
+const searchInput = document.getElementById("searchInput");
+const cards = document.querySelectorAll(".blog-card");
+
+searchInput.addEventListener("keyup", () => {
+  const value = searchInput.value.toLowerCase();
+  cards.forEach(card => {
+    const text = card.innerText.toLowerCase();
+    card.style.display = text.includes(value) ? "block" : "none";
+  });
+});
+</script>
+
+</body>
+</html>
