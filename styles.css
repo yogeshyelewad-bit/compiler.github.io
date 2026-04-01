@@ -72,6 +72,7 @@ button {
 }
 
 .hero,
+.info-section,
 .compiler-section,
 .ad-strip,
 .feature-section,
@@ -522,13 +523,21 @@ pre {
 }
 
 .feature-grid,
+.info-grid,
 .adsense-grid {
   display: grid;
   gap: 18px;
 }
 
-.feature-grid {
+.feature-grid,
+.info-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.info-card {
+  background:
+    linear-gradient(180deg, rgba(31, 35, 45, 0.92), rgba(20, 24, 31, 0.94)),
+    radial-gradient(circle at top right, rgba(255, 122, 24, 0.14), transparent 32%);
 }
 
 .adsense-grid {
@@ -589,6 +598,7 @@ code {
   .hero-grid,
   .workspace,
   .feature-grid,
+  .info-grid,
   .adsense-grid {
     grid-template-columns: 1fr;
   }
