@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>AI Article Generator</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+<div class="blog-container">
+
+<h1>AI Blog Generator</h1>
+
+<input id="topic" placeholder="Enter topic..."
+ style="width:100%;padding:10px;margin:10px 0;">
+
+<button onclick="generate()">Generate Article</button>
+
+<pre id="output"></pre>
+
+</div>
+
+<script>
+function generate() {
+  const topic = document.getElementById("topic").value;
+
+  const article = `
+# ${topic}
+
+${topic} is an important concept in Python.
+
+## Introduction
+This article explains ${topic} in simple words.
+
+## Example
+print("Learning ${topic}")
+
+## Conclusion
+Practice ${topic} to improve your coding skills.
+`;
+
+  document.getElementById("output").textContent = article;
+}
+</script>
+
+</body>
+</html>
