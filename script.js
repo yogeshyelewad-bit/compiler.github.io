@@ -181,7 +181,7 @@ async function initializeRuntime() {
     runtimeStatus.classList.add("error");
     outputConsole.textContent = `Unable to load Python runtime.\n${error}`;
     setHumanMessage(
-      "The Python engine could not load. If this site is on GitHub Pages, make sure internet access is available because Pyodide loads from a CDN.",
+      "The Python engine could not load. Make sure internet access is available because Pyodide is loaded from a CDN.",
       "error"
     );
     setImprovements([
