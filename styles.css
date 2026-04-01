@@ -270,11 +270,23 @@ h3 {
 
 .example-select {
   min-height: 48px;
+  min-width: 210px;
   border-radius: 999px;
   padding: 0 14px;
-  border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 179, 71, 0.32);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
   color: var(--text);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.example-select:focus {
+  outline: none;
+  border-color: rgba(255, 179, 71, 0.7);
+  box-shadow: 0 0 0 3px rgba(255, 122, 24, 0.14);
+}
+
+.example-load-btn {
+  border-color: rgba(255, 179, 71, 0.26);
 }
 
 .hero-points,
