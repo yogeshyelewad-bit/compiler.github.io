@@ -240,6 +240,8 @@ function clearOutput() {
 
 function loadExample() {
   codeInput.value = starterCode;
+  codeInput.focus();
+  codeInput.setSelectionRange(codeInput.value.length, codeInput.value.length);
   setHumanMessage("Sample Python code loaded. Click Run Python to test it.", "neutral");
   setImprovements([
     "Change the name value to see different output.",
@@ -262,11 +264,28 @@ async function copyCode() {
   }
 }
 
-runButton.addEventListener("click", runCode);
-clearButton.addEventListener("click", clearOutput);
-exampleButton.addEventListener("click", loadExample);
-loadExampleHero.addEventListener("click", loadExample);
-copyButton.addEventListener("click", copyCode);
+function bindClick(element, handler) {
+  if (element) {
+    element.addEventListener("click", handler);
+  }
+}
+
+bindClick(runButton, runCode);
+bindClick(clearButton, clearOutput);
+bindClick(exampleButton, loadExample);
+bindClick(loadExampleHero, () => {
+  loadExample();
+  document.getElementById("compiler")?.scrollIntoView({ behavior: "smooth", block: "start" });
+});
+bindClick(copyButton, copyCode);
+
+document.addEventListener("keydown", (event) => {
+  const isRunShortcut = (event.ctrlKey || event.metaKey) && event.key === "Enter";
+  if (isRunShortcut) {
+    event.preventDefault();
+    runCode();
+  }
+});
 
 window.addEventListener("load", () => {
   initializeRuntime();
