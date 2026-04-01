@@ -719,3 +719,31 @@ code {
   margin-top: 20px;
   color: #ffb347;
 }
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+  gap: 20px;
+}
+
+.blog-card {
+  background: #111;
+  border-radius: 15px;
+  overflow: hidden;
+  text-decoration: none;
+  color: white;
+  transition: 0.3s;
+}
+
+.blog-card:hover {
+  transform: scale(1.05);
+}
+
+.blog-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.blog-card h3 {
+  padding: 15px;
+}
