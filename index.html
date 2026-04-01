@@ -29,9 +29,10 @@
         </a>
 
         <div class="nav-links">
+          <a href="#info">Info</a>
           <a href="#compiler">Compiler</a>
+          <a href="#sponsors">Sponsors</a>
           <a href="#features">Features</a>
-          <a href="#adsense">AdSense</a>
         </div>
       </nav>
 
@@ -46,19 +47,19 @@
 
           <div class="hero-actions">
             <a class="button button-primary" href="#compiler">Start coding</a>
-            <button class="button button-secondary" id="loadExampleHero" type="button">scroll down⏬ </button>
+            <button class="button button-secondary" id="loadExampleHero" type="button">Load example</button>
           </div>
 
           <div class="hero-badges">
             <span class="badge">Beginner friendly</span>
-            <span class="badge">works smoothly</span>
+            <span class="badge">Runs on GitHub Pages</span>
             <span class="badge">Human-language feedback</span>
           </div>
 
           <ul class="hero-points">
-            <li>No more worries about errors</li>
+            <li>No backend needed for GitHub Pages</li>
             <li>Human-friendly debugging help</li>
-            <li>Output in one click</li>
+            <li>AdSense placeholders already included</li>
           </ul>
         </div>
 
@@ -77,6 +78,66 @@
         </div>
       </section>
     </header>
+
+    <main>
+      <section class="info-section reveal" id="info">
+        <div class="section-heading">
+          <p class="eyebrow">Top information</p>
+          <h2>Everything you need before you start coding</h2>
+          <p class="section-text">
+            Quick details first, then jump into the compiler, then configure sponsor placements.
+          </p>
+        </div>
+
+        <div class="info-grid">
+          <article class="card info-card">
+            <h3>Who this is for</h3>
+            <p>Students, beginners, and creators who want an easy Python sandbox in the browser.</p>
+          </article>
+          <article class="card info-card">
+            <h3>What it runs</h3>
+            <p>Pure Python scripts with Pyodide, including readable output and simplified error help.</p>
+          </article>
+          <article class="card info-card">
+            <h3>How to publish</h3>
+            <p>Push to GitHub Pages, add your AdSense IDs, and launch with no backend server.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="compiler-section reveal" id="compiler">
+        <div class="section-heading">
+          <p class="eyebrow">Compiler</p>
+          <h2>Browser-based Python playground</h2>
+          <p class="section-text">
+            This runs Python in the browser. It works great for learning, practice, and most pure-Python scripts.
+          </p>
+        </div>
+
+        <div class="quick-guide card">
+          <div class="guide-step">
+            <span>1</span>
+            <div>
+              <strong>Write or paste Python</strong>
+              <p>Use the editor below for your script or homework practice.</p>
+            </div>
+          </div>
+          <div class="guide-step">
+            <span>2</span>
+            <div>
+              <strong>Run it instantly</strong>
+              <p>Click the run button and the browser executes the code for you.</p>
+            </div>
+          </div>
+          <div class="guide-step">
+            <span>3</span>
+            <div>
+              <strong>Understand the result</strong>
+              <p>Read output, errors, and improvement tips in simple language.</p>
+            </div>
+          </div>
+        </div>
+
         <div class="workspace">
           <div class="editor-panel card">
             <div class="panel-header">
@@ -128,57 +189,37 @@
           </div>
         </div>
       </section>
-    <main>
-      <section class="compiler-section reveal" id="compiler">
+
+      <section class="adsense-section reveal" id="sponsors">
         <div class="section-heading">
-          <p class="eyebrow">Compiler</p>
-          <h2>Browser-based Python playground</h2>
+          <p class="eyebrow">Sponsors</p>
+          <h2>Sponsor placements after the compiler</h2>
           <p class="section-text">
-            This runs Python in the browser. It works great for learning, practice, and most pure-Python scripts.
+            Replace placeholder IDs with your real AdSense values before publishing.
           </p>
         </div>
-
-        <div class="quick-guide card">
-          <div class="guide-step">
-            <span>1</span>
-            <div>
-              <strong>Write or paste Python</strong>
-              <p>Use the editor below for your script or homework practice.</p>
-            </div>
+        <div class="adsense-grid">
+          <div class="card adsense-info">
+            <p class="eyebrow">Sponsor setup</p>
+            <h2>Ready for your sponsor details</h2>
+            <ul class="check-list">
+              <li>Replace `ca-pub-XXXXXXXXXXXXXXXX` with your real publisher ID.</li>
+              <li>Replace `1234567890` with your actual ad slot IDs.</li>
+              <li>Update `ads.txt` with your publisher information.</li>
+              <li>Deploy the repo to GitHub Pages.</li>
+            </ul>
           </div>
-          <div class="guide-step">
-            <span>2</span>
-            <div>
-              <strong>Run it instantly</strong>
-              <p>Click the run button and the browser executes the code for you.</p>
-            </div>
-          </div>
-          <div class="guide-step">
-            <span>3</span>
-            <div>
-              <strong>Understand the result</strong>
-              <p>Read output, errors, and improvement tips in simple language.</p>
-            </div>
-          </div>
-        </div>
 
-
-
-      <section class="ad-strip reveal">
-        <div class="card ad-card">
-          <div>
-            <p class="eyebrow">Sponsored space</p>
-            <h2>Top AdSense area</h2>
-            <p class="section-text">
-              Replace the placeholder publisher and slot IDs with your real AdSense values before publishing.
-            </p>
+          <div class="card ad-card side-ad">
+            <p class="panel-kicker">Sidebar ad</p>
+            <h3>Responsive display ad</h3>
+            <ins class="adsbygoogle"
+              style="display:block"
+              data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+              data-ad-slot="1234567890"
+              data-ad-format="auto"
+              data-full-width-responsive="true"></ins>
           </div>
-          <ins class="adsbygoogle"
-            style="display:block"
-            data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
-            data-ad-slot="1234567890"
-            data-ad-format="auto"
-            data-full-width-responsive="true"></ins>
         </div>
       </section>
 
@@ -201,32 +242,6 @@
             <h3>Gives useful improvements</h3>
             <p>The app checks for beginner-friendly code quality suggestions like naming, comments, and safer patterns.</p>
           </article>
-        </div>
-      </section>
-
-      <section class="adsense-section reveal" id="adsense">
-        <div class="adsense-grid">
-          <div class="card adsense-info">
-            <p class="eyebrow">AdSense setup</p>
-            <h2>Ready for your monetization details</h2>
-            <ul class="check-list">
-              <li>Replace `ca-pub-XXXXXXXXXXXXXXXX` with your real publisher ID.</li>
-              <li>Replace `1234567890` with your actual ad slot IDs.</li>
-              <li>Update `ads.txt` with your publisher information.</li>
-              <li>Deploy the repo to GitHub Pages.</li>
-            </ul>
-          </div>
-
-          <div class="card ad-card side-ad">
-            <p class="panel-kicker">Sidebar ad</p>
-            <h3>Responsive display ad</h3>
-            <ins class="adsbygoogle"
-              style="display:block"
-              data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
-              data-ad-slot="1234567890"
-              data-ad-format="auto"
-              data-full-width-responsive="true"></ins>
-          </div>
         </div>
       </section>
     </main>
