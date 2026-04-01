@@ -22,11 +22,34 @@ const clearButton = document.getElementById("clearButton");
 const exampleButton = document.getElementById("exampleButton");
 const loadExampleHero = document.getElementById("loadExampleHero");
 const copyButton = document.getElementById("copyButton");
+const exampleSelect = document.getElementById("exampleSelect");
+const loadSelectedExample = document.getElementById("loadSelectedExample");
 
 let pyodide;
 let runtimeReady = false;
 
 codeInput.value = starterCode;
+
+const samplePrograms = {
+  starter: starterCode,
+  loop: `# Loop and condition example
+
+for number in range(1, 6):
+    if number % 2 == 0:
+        print(number, "is even")
+    else:
+        print(number, "is odd")
+`,
+  function: `# Function + list example
+
+def average(values):
+    return sum(values) / len(values)
+
+scores = [76, 88, 91, 84]
+print("Average:", average(scores))
+`
+};
+
 
 const revealItems = document.querySelectorAll(".reveal");
 
@@ -240,6 +263,7 @@ function clearOutput() {
 
 function loadExample() {
   codeInput.value = starterCode;
+
   codeInput.focus();
   codeInput.setSelectionRange(codeInput.value.length, codeInput.value.length);
   setHumanMessage("Sample Python code loaded. Click Run Python to test it.", "neutral");
@@ -247,6 +271,20 @@ function loadExample() {
     "Change the name value to see different output.",
     "Add another number into the list and rerun the code.",
     "Create a new function and print its result."
+  ]);
+}
+
+
+function loadSelectedExampleCode() {
+  const key = exampleSelect?.value || "starter";
+  codeInput.value = samplePrograms[key] || starterCode;
+  codeInput.focus();
+  codeInput.setSelectionRange(codeInput.value.length, codeInput.value.length);
+  setHumanMessage("Selected example loaded. Click Run Python to execute it.", "neutral");
+  setImprovements([
+    "Modify one line and run again.",
+    "Try adding your own print() outputs.",
+    "Compare how each sample is structured."
   ]);
 }
 
@@ -273,6 +311,7 @@ function bindClick(element, handler) {
 bindClick(runButton, runCode);
 bindClick(clearButton, clearOutput);
 bindClick(exampleButton, loadExample);
+bindClick(loadSelectedExample, loadSelectedExampleCode);
 bindClick(loadExampleHero, () => {
   loadExample();
   document.getElementById("compiler")?.scrollIntoView({ behavior: "smooth", block: "start" });
