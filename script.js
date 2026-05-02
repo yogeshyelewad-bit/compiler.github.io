@@ -177,10 +177,18 @@ async function initializeRuntime() {
     pyodide = await loadPyodide();
     runtimeStatus.textContent = "Loading data analysis modules...";
     await pyodide.loadPackage(["numpy", "pandas", "matplotlib", "micropip"]);
-    await pyodide.runPythonAsync(`
+    try {
+      await pyodide.loadPackage(["seaborn"]);
+    } catch (_) {
+      try {
+        await pyodide.runPythonAsync(`
 import micropip
 await micropip.install("seaborn")
 `);
+      } catch (_) {
+        // Seaborn may be unavailable if package indexes are blocked.
+      }
+    }
     runtimeReady = true;
     runtimeStatus.textContent = "Python runtime ready";
     runtimeStatus.classList.add("ready");
@@ -238,20 +246,43 @@ try:
 
     safe_globals = {"__builtins__": dict(vars(builtins))}
     safe_globals["__builtins__"]["input"] = browser_input
+    try:
+        import matplotlib
+        matplotlib.use("AGG")
+        import matplotlib.pyplot as plt
+        original_show = plt.show
+
+        def silent_show(*args, **kwargs):
+            return None
+
+        plt.show = silent_show
+    except Exception:
+        plt = None
+
     exec(user_code, safe_globals)
     try:
         import matplotlib.pyplot as plt
         import base64
         from io import BytesIO
 
-        figure_numbers = plt.get_fignums()
-        for fig_number in figure_numbers:
+        figure_numbers = set(plt.get_fignums())
+
+        for value in safe_globals.values():
+            fig_attr = getattr(value, "fig", None)
+            if fig_attr is not None:
+                try:
+                    figure_numbers.add(fig_attr.number)
+                except Exception:
+                    pass
+
+        for fig_number in sorted(figure_numbers):
             fig = plt.figure(fig_number)
             chart_buffer = BytesIO()
             fig.savefig(chart_buffer, format="png", bbox_inches="tight")
             chart_buffer.seek(0)
             encoded = base64.b64encode(chart_buffer.read()).decode("utf-8")
             result["plots"].append(encoded)
+
         if figure_numbers:
             plt.close("all")
     except Exception:
@@ -371,75 +402,77 @@ async function mountUploadedFiles() {
   }
 
   const files = Array.from(dataFileInput?.files || []);
-  if (!files.length) {
-    setHumanMessage("Please choose at least one dataset file first.", "neutral");
+  if (files.length === 0) {
+    setHumanMessage("Choose at least one file first, then click Attach to Python.", "neutral");
     return;
   }
 
-  let mountedCount = 0;
+  const baseDir = "/home/pyodide/data";
+  pyodide.FS.mkdirTree(baseDir);
 
   for (const file of files) {
-    try {
-      const buffer = await file.arrayBuffer();
-      const bytes = new Uint8Array(buffer);
-
-      const targetPath = `/home/pyodide/data/${file.name}`;
-      const dirPath = "/home/pyodide/data";
-
-      try {
-        pyodide.FS.mkdirTree(dirPath);
-      } catch (_) {
-        // directory may already exist
-      }
-
-      try {
-        pyodide.FS.unlink(targetPath);
-      } catch (_) {
-        // file may not exist yet
-      }
-
-      pyodide.FS.writeFile(targetPath, bytes);
-      mountedCount += 1;
-
-      if (!uploadedDataFiles.includes(file.name)) {
-        uploadedDataFiles.push(file.name);
-      }
-    } catch (error) {
-      outputConsole.textContent = `Could not attach ${file.name}:\n${error}`;
-    }
+    const bytes = new Uint8Array(await file.arrayBuffer());
+    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+    pyodide.FS.writeFile(`${baseDir}/${safeName}`, bytes);
   }
 
-  if (mountedCount > 0) {
-    datasetHint.innerHTML = `Attached files: <code>${uploadedDataFiles.join("</code>, <code>")}</code>.<br>Use them in Python with paths like <code>/home/pyodide/data/your_file.csv</code>.`;
-    setHumanMessage(`${mountedCount} dataset file(s) attached to Python successfully.`, "success");
-    setImprovements([
-      "Use pandas.read_csv('/home/pyodide/data/filename.csv') for CSV files.",
-      "Use json.load(open('/home/pyodide/data/filename.json')) for JSON files.",
-      "Print a preview to confirm the file loaded correctly."
-    ]);
+  uploadedDataFiles = files.map((file) => file.name.replace(/[^a-zA-Z0-9._-]/g, "_"));
+  pyodide.globals.set("uploaded_data_files", uploadedDataFiles);
+
+  const fileList = uploadedDataFiles.map((name) => `- ${name}`).join("\n");
+  setHumanMessage("Dataset files attached. Use pandas/read_csv with /home/pyodide/data/<filename>.", "success");
+  setImprovements([
+    "Use pandas as pd to load CSV/TSV/JSON datasets.",
+    "Print df.head() and df.info() to verify schema quickly.",
+    "Use the uploaded_data_files Python variable to see available files."
+  ]);
+  outputConsole.textContent = `Attached ${uploadedDataFiles.length} file(s) to Python runtime:\n${fileList}`;
+}
+
+function bindClick(element, handler) {
+  if (element) {
+    element.addEventListener("click", handler);
   }
 }
 
-if (exampleButton) {
-  exampleButton.addEventListener("click", loadExample);
-}
-if (loadExampleHero) {
-  loadExampleHero.addEventListener("click", loadExample);
-}
-if (runButton) {
-  runButton.addEventListener("click", runCode);
-}
-if (clearButton) {
-  clearButton.addEventListener("click", clearOutput);
-}
-if (copyButton) {
-  copyButton.addEventListener("click", copyCode);
-}
-if (loadSelectedExample) {
-  loadSelectedExample.addEventListener("click", loadSelectedExampleCode);
-}
-if (mountDataButton) {
-  mountDataButton.addEventListener("click", mountUploadedFiles);
+bindClick(runButton, runCode);
+bindClick(clearButton, clearOutput);
+bindClick(exampleButton, loadExample);
+bindClick(loadSelectedExample, loadSelectedExampleCode);
+bindClick(loadExampleHero, () => {
+  loadExample();
+  document.getElementById("compiler")?.scrollIntoView({ behavior: "smooth", block: "start" });
+});
+bindClick(copyButton, copyCode);
+bindClick(mountDataButton, mountUploadedFiles);
+
+document.addEventListener("keydown", (event) => {
+  const isRunShortcut = (event.ctrlKey || event.metaKey) && event.key === "Enter";
+  if (isRunShortcut) {
+    event.preventDefault();
+    runCode();
+  }
+});
+
+if (dataFileInput && datasetHint) {
+  dataFileInput.addEventListener("change", () => {
+    const count = dataFileInput.files?.length || 0;
+    datasetHint.textContent = count
+      ? `${count} file(s) selected. Click "Attach to Python" to make them available in runtime.`
+      : "Uploaded files are available in Python at /home/pyodide/data/filename.";
+  });
 }
 
-initializeRuntime();
+window.addEventListener("load", () => {
+  initializeRuntime();
+
+  if (window.adsbygoogle) {
+    document.querySelectorAll(".adsbygoogle").forEach(() => {
+      try {
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      } catch (error) {
+        console.warn("AdSense placeholder is not active yet.", error);
+      }
+    });
+  }
+});
