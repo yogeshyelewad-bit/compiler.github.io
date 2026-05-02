@@ -24,9 +24,13 @@ const loadExampleHero = document.getElementById("loadExampleHero");
 const copyButton = document.getElementById("copyButton");
 const exampleSelect = document.getElementById("exampleSelect");
 const loadSelectedExample = document.getElementById("loadSelectedExample");
+const dataFileInput = document.getElementById("dataFileInput");
+const mountDataButton = document.getElementById("mountDataButton");
+const datasetHint = document.getElementById("datasetHint");
 
 let pyodide;
 let runtimeReady = false;
+let uploadedDataFiles = [];
 
 codeInput.value = starterCode;
 
@@ -311,6 +315,40 @@ async function copyCode() {
   }
 }
 
+async function mountUploadedFiles() {
+  if (!runtimeReady || !pyodide) {
+    setHumanMessage("Runtime is not ready yet. Wait a moment and try attaching files again.", "error");
+    return;
+  }
+
+  const files = Array.from(dataFileInput?.files || []);
+  if (files.length === 0) {
+    setHumanMessage("Choose at least one file first, then click Attach to Python.", "neutral");
+    return;
+  }
+
+  const baseDir = "/home/pyodide/data";
+  pyodide.FS.mkdirTree(baseDir);
+
+  for (const file of files) {
+    const bytes = new Uint8Array(await file.arrayBuffer());
+    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+    pyodide.FS.writeFile(`${baseDir}/${safeName}`, bytes);
+  }
+
+  uploadedDataFiles = files.map((file) => file.name.replace(/[^a-zA-Z0-9._-]/g, "_"));
+  pyodide.globals.set("uploaded_data_files", uploadedDataFiles);
+
+  const fileList = uploadedDataFiles.map((name) => `- ${name}`).join("\n");
+  setHumanMessage("Dataset files attached. Use pandas/read_csv with /home/pyodide/data/<filename>.", "success");
+  setImprovements([
+    "Use pandas as pd to load CSV/TSV/JSON datasets.",
+    "Print df.head() and df.info() to verify schema quickly.",
+    "Use the uploaded_data_files Python variable to see available files."
+  ]);
+  outputConsole.textContent = `Attached ${uploadedDataFiles.length} file(s) to Python runtime:\n${fileList}`;
+}
+
 function bindClick(element, handler) {
   if (element) {
     element.addEventListener("click", handler);
@@ -326,6 +364,7 @@ bindClick(loadExampleHero, () => {
   document.getElementById("compiler")?.scrollIntoView({ behavior: "smooth", block: "start" });
 });
 bindClick(copyButton, copyCode);
+bindClick(mountDataButton, mountUploadedFiles);
 
 document.addEventListener("keydown", (event) => {
   const isRunShortcut = (event.ctrlKey || event.metaKey) && event.key === "Enter";
@@ -334,6 +373,15 @@ document.addEventListener("keydown", (event) => {
     runCode();
   }
 });
+
+if (dataFileInput && datasetHint) {
+  dataFileInput.addEventListener("change", () => {
+    const count = dataFileInput.files?.length || 0;
+    datasetHint.textContent = count
+      ? `${count} file(s) selected. Click "Attach to Python" to make them available in runtime.`
+      : "Uploaded files are available in Python at /home/pyodide/data/filename.";
+  });
+}
 
 window.addEventListener("load", () => {
   initializeRuntime();
