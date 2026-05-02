@@ -86,45 +86,16 @@ function analyzeCode(code, hadError) {
   const trimmed = code.trim();
   const lines = code.split("\n");
 
-  if (!trimmed) {
-    improvements.push("Start with a simple print statement like print('Hello') to test the compiler.");
-  }
-
-  if (!/print\s*\(/.test(code)) {
-    improvements.push("Consider adding print() statements so users can clearly see the result of the program.");
-  }
-
-  if (!/#/.test(code)) {
-    improvements.push("Add a short comment for important parts so beginners can understand the code faster.");
-  }
-
-  if (lines.length > 18) {
-    improvements.push("Your code is getting longer. Splitting repeated logic into small functions will make it easier to maintain.");
-  }
-
-  if (/input\s*\(/.test(code)) {
-    improvements.push("If you use input(), guide the user with a clear message so they know what to type.");
-  }
-
-  if (/while\s+True/.test(code)) {
-    improvements.push("A while True loop should usually include a clear break condition so it does not run forever.");
-  }
-
-  if (/^[a-z]$/m.test(code)) {
-    improvements.push("Very short variable names can be hard to read. Use names that describe the value more clearly.");
-  }
-
-  if (/except\s*:/.test(code)) {
-    improvements.push("Avoid a blank except block. Catch a specific exception so debugging stays easier.");
-  }
-
-  if (/==\s*True|==\s*False/.test(code)) {
-    improvements.push("You can simplify comparisons to True or False by checking the value directly.");
-  }
-
-  if (!hadError && improvements.length === 0) {
-    improvements.push("Nice work. Your code looks clean for this run. You can improve it further by adding more meaningful test cases.");
-  }
+  if (!trimmed) improvements.push("Start with a simple print statement like print('Hello') to test the compiler.");
+  if (!/print\s*\(/.test(code)) improvements.push("Consider adding print() statements so users can clearly see the result of the program.");
+  if (!/#/.test(code)) improvements.push("Add a short comment for important parts so beginners can understand the code faster.");
+  if (lines.length > 18) improvements.push("Your code is getting longer. Splitting repeated logic into small functions will make it easier to maintain.");
+  if (/input\s*\(/.test(code)) improvements.push("If you use input(), guide the user with a clear message so they know what to type.");
+  if (/while\s+True/.test(code)) improvements.push("A while True loop should usually include a clear break condition so it does not run forever.");
+  if (/^[a-z]$/m.test(code)) improvements.push("Very short variable names can be hard to read. Use names that describe the value more clearly.");
+  if (/except\s*:/.test(code)) improvements.push("Avoid a blank except block. Catch a specific exception so debugging stays easier.");
+  if (/==\s*True|==\s*False/.test(code)) improvements.push("You can simplify comparisons to True or False by checking the value directly.");
+  if (!hadError && improvements.length === 0) improvements.push("Nice work. Your code looks clean for this run. You can improve it further by adding more meaningful test cases.");
 
   return improvements.slice(0, 5);
 }
@@ -132,41 +103,15 @@ function analyzeCode(code, hadError) {
 function explainError(rawError) {
   const message = String(rawError || "");
 
-  if (message.includes("SyntaxError")) {
-    return "There is a syntax mistake in your code. This usually means Python found something written in the wrong format, like a missing colon, bracket, or quote.";
-  }
-
-  if (message.includes("IndentationError")) {
-    return "Your indentation is not valid. Python uses spacing to understand blocks of code, so make sure lines inside functions, loops, and conditions are aligned properly.";
-  }
-
-  if (message.includes("NameError")) {
-    return "Python found a name that does not exist yet. This often means a variable or function was used before it was created, or its spelling does not match.";
-  }
-
-  if (message.includes("TypeError")) {
-    return "Two values are being used in an incompatible way. For example, you may be mixing text and numbers, or calling something that is not a function.";
-  }
-
-  if (message.includes("ZeroDivisionError")) {
-    return "Your code tried to divide by zero. Python stops because dividing by zero is mathematically invalid.";
-  }
-
-  if (message.includes("IndexError")) {
-    return "Your code tried to access a list position that does not exist. Check the list length and make sure the index is inside the valid range.";
-  }
-
-  if (message.includes("KeyError")) {
-    return "Your code tried to use a dictionary key that is not available. Make sure the key exists before reading it.";
-  }
-
-  if (message.includes("ValueError")) {
-    return "A value has the right type, but the content is not acceptable. This often happens when converting text into a number that is not valid.";
-  }
-
-  if (message.includes("ImportError") || message.includes("ModuleNotFoundError")) {
-    return "Your code is trying to import a module that is not available in this browser runtime. Pyodide supports many Python modules, but not every package.";
-  }
+  if (message.includes("SyntaxError")) return "There is a syntax mistake in your code. This usually means Python found something written in the wrong format, like a missing colon, bracket, or quote.";
+  if (message.includes("IndentationError")) return "Your indentation is not valid. Python uses spacing to understand blocks of code, so make sure lines inside functions, loops, and conditions are aligned properly.";
+  if (message.includes("NameError")) return "Python found a name that does not exist yet. This often means a variable or function was used before it was created, or its spelling does not match.";
+  if (message.includes("TypeError")) return "Two values are being used in an incompatible way. For example, you may be mixing text and numbers, or calling something that is not a function.";
+  if (message.includes("ZeroDivisionError")) return "Your code tried to divide by zero. Python stops because dividing by zero is mathematically invalid.";
+  if (message.includes("IndexError")) return "Your code tried to access a list position that does not exist. Check the list length and make sure the index is inside the valid range.";
+  if (message.includes("KeyError")) return "Your code tried to use a dictionary key that is not available. Make sure the key exists before reading it.";
+  if (message.includes("ValueError")) return "A value has the right type, but the content is not acceptable. This often happens when converting text into a number that is not valid.";
+  if (message.includes("ImportError") || message.includes("ModuleNotFoundError")) return "Your code is trying to import a module that is not available in this browser runtime. Pyodide supports many Python modules, but not every package.";
 
   return "Your code hit a runtime error. Read the error details below and check the line that caused the problem. A small fix in names, values, or structure will usually solve it.";
 }
@@ -183,10 +128,7 @@ async function initializeRuntime() {
     runtimeStatus.textContent = "Runtime failed to load";
     runtimeStatus.classList.add("error");
     outputConsole.textContent = `Unable to load Python runtime.\n${error}`;
-    setHumanMessage(
-      "The Python engine could not load. Make sure internet access is available because Pyodide is loaded from a CDN.",
-      "error"
-    );
+    setHumanMessage("The Python engine could not load. Make sure internet access is available because Pyodide is loaded from a CDN.", "error");
     setImprovements([
       "Check your internet connection.",
       "Make sure the Pyodide CDN script is not blocked.",
@@ -252,10 +194,7 @@ json.dumps(result)
 
     if (result.ok) {
       outputConsole.textContent = outputText || "Program finished successfully with no printed output.";
-      setHumanMessage(
-        "Your code ran successfully. If you want users to see more results, add more print() statements or clearer messages.",
-        "success"
-      );
+      setHumanMessage("Your code ran successfully. If you want users to see more results, add more print() statements or clearer messages.", "success");
     } else {
       outputConsole.textContent = `${outputText}${outputText ? "\n" : ""}${errorText}`.trim();
       setHumanMessage(explainError(errorText), "error");
@@ -277,7 +216,6 @@ function clearOutput() {
 
 function loadExample() {
   codeInput.value = starterCode;
-
   codeInput.focus();
   codeInput.setSelectionRange(codeInput.value.length, codeInput.value.length);
   setHumanMessage("Sample Python code loaded. Click Run Python to test it.", "neutral");
@@ -310,7 +248,7 @@ async function copyCode() {
       "Keep editing here and run it again whenever you need.",
       "Use sample code if you want a fresh starting point."
     ]);
-  } catch (error) {
+  } catch {
     setHumanMessage("Copy failed in this browser. You can still select the code manually.", "error");
   }
 }
@@ -340,19 +278,17 @@ async function mountUploadedFiles() {
   pyodide.globals.set("uploaded_data_files", uploadedDataFiles);
 
   const fileList = uploadedDataFiles.map((name) => `- ${name}`).join("\n");
+  outputConsole.textContent = `Attached ${uploadedDataFiles.length} file(s) to Python runtime:\n${fileList}`;
   setHumanMessage("Dataset files attached. Use pandas/read_csv with /home/pyodide/data/<filename>.", "success");
   setImprovements([
     "Use pandas as pd to load CSV/TSV/JSON datasets.",
     "Print df.head() and df.info() to verify schema quickly.",
-    "Use the uploaded_data_files Python variable to see available files."
+    "Use uploaded_data_files Python variable to see available files."
   ]);
-  outputConsole.textContent = `Attached ${uploadedDataFiles.length} file(s) to Python runtime:\n${fileList}`;
 }
 
 function bindClick(element, handler) {
-  if (element) {
-    element.addEventListener("click", handler);
-  }
+  if (element) element.addEventListener("click", handler);
 }
 
 bindClick(runButton, runCode);
