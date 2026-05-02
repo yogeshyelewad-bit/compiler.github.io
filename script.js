@@ -412,19 +412,35 @@ async function mountUploadedFiles() {
   }
 
   const baseDir = "/home/pyodide/data";
+  const mntDir = "/mnt/data";
   pyodide.FS.mkdirTree(baseDir);
+  pyodide.FS.mkdirTree(mntDir);
+
+  uploadedDataFiles = [];
 
   for (const file of files) {
     const bytes = new Uint8Array(await file.arrayBuffer());
-    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-    pyodide.FS.writeFile(`${baseDir}/${safeName}`, bytes);
-  }
+    const safeName = file.name.replace(/[^a-zA-Z0-9._ -]/g, "_");
+    const originalNamePath = `${baseDir}/${file.name}`;
+    const safeNamePath = `${baseDir}/${safeName}`;
 
-  uploadedDataFiles = files.map((file) => file.name.replace(/[^a-zA-Z0-9._-]/g, "_"));
+    pyodide.FS.writeFile(originalNamePath, bytes);
+    if (safeName !== file.name) {
+      pyodide.FS.writeFile(safeNamePath, bytes);
+    }
+
+    pyodide.FS.writeFile(`${mntDir}/${file.name}`, bytes);
+    if (safeName !== file.name) {
+      pyodide.FS.writeFile(`${mntDir}/${safeName}`, bytes);
+    }
+
+    uploadedDataFiles.push(file.name);
+    if (safeName !== file.name) uploadedDataFiles.push(safeName);
+  }
   pyodide.globals.set("uploaded_data_files", uploadedDataFiles);
 
   const fileList = uploadedDataFiles.map((name) => `- ${name}`).join("\n");
-  setHumanMessage("Dataset files attached. Use pandas/read_csv with /home/pyodide/data/<filename>.", "success");
+  setHumanMessage("Dataset files attached. Use pandas/read_csv with /home/pyodide/data/<filename> or /mnt/data/<filename>.", "success");
   setImprovements([
     "Use pandas as pd to load CSV/TSV/JSON datasets.",
     "Print df.head() and df.info() to verify schema quickly.",
