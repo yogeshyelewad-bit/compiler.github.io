@@ -1,48 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>YBY Compiler</title>
-  <link rel="stylesheet" href="./styles.css" />
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="YBY Compiler">
+  <meta name="keywords" content="online python compiler, run python online, python tutorial, learn python, yby compiler">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta
+    name="description"
+    content="YBY Compiler is a browser-based Python compiler with human-friendly error explanations and code improvements."
+  >
+  <title>YBY Compiler | Run Python Smoothly</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-  <main class="container">
-    <header class="hero">
-      <h1>YBY Compiler</h1>
-      <p>Run Python in your browser with simple output and error help.</p>
+  <div class="noise"></div>
+
+  <div class="site-shell">
+    <header class="hero" id="home">
+      <nav class="topbar">
+        <a class="brand" href="#home" aria-label="YBY Compiler home">
+          <span class="brand-mark">Y</span>
+          <span class="brand-copy">
+            <strong>YBY Compiler</strong>
+            <small>Python in your browser</small>
+          </span>
+        </a>
+
+        <div class="nav-links">
+          <a href="#compiler">Compiler</a>
+          <a href="#info">Info</a>
+          <a href="#features">Features</a>
+          <a href="blog.html">Blog</a>
+        </div>
+      </nav>
+
+      <section class="hero-grid">
+        <div class="hero-copy reveal">
+          <p class="eyebrow">Fast browser Python experience</p>
+          <h1>Write Python, run it instantly, and understand mistakes in plain English.</h1>
+          <p class="hero-text">
+            YBY Compiler runs Python directly in the browser with Pyodide, shows clean output,
+            translates technical errors into human language, and gives improvement tips for beginners.
+          </p>
+
+          <div class="hero-actions">
+            <a class="button button-primary" href="#compiler">Start coding</a>
+            <button class="button button-secondary" id="loadExampleHero" type="button">Load example</button>
+          </div>
+        </div>
+
+        <div class="hero-card reveal" aria-hidden="true">
+          <div class="mini-terminal">
+            <div class="mini-top">
+              <span></span><span></span><span></span>
+            </div>
+            <div class="mini-code">
+              <p><span class="prompt">&gt;&gt;&gt;</span> numbers = [3, 5, 8]</p>
+              <p><span class="prompt">&gt;&gt;&gt;</span> print(sum(numbers))</p>
+              <p class="success">16</p>
+              <p class="hint-line">Friendly guide: Your code ran correctly.</p>
+            </div>
+          </div>
+        </div>
+      </section>
     </header>
 
-    <section class="card">
-      <h2>Python Editor</h2>
-      <textarea id="codeInput" spellcheck="false"></textarea>
+    <main>
+      <section class="compiler-section reveal" id="compiler">
+        <div class="section-heading">
+          <p class="eyebrow">Compiler</p>
+          <h2>Browser-based Python playground</h2>
+          <p class="section-text">
+            This runs Python in the browser. Great for learning, practice, and pure-Python scripts.
+          </p>
+        </div>
 
-      <div class="toolbar">
-        <button id="runButton" disabled>Run Python</button>
-        <button id="clearButton">Clear Output</button>
-      </div>
+        <div class="workspace">
+          <div class="editor-panel card">
+            <div class="panel-header">
+              <div>
+                <p class="panel-kicker">Editor</p>
+                <h3>main.py</h3>
+              </div>
+              <span class="status-pill" id="runtimeStatus">Loading Python runtime...</span>
+            </div>
 
-      <div class="toolbar data-tools">
-        <label for="dataFileInput" class="upload-label">Upload dataset(s)</label>
-        <input id="dataFileInput" type="file" multiple accept=".csv,.json,.txt,.tsv,.xlsx,.parquet" />
-        <button id="mountDataButton">Attach to Python</button>
-      </div>
+            <label class="sr-only" for="codeInput">Python code editor</label>
+            <textarea id="codeInput" spellcheck="false"></textarea>
 
-      <p id="datasetHint">Files will be available at: <code>/home/pyodide/data/filename</code></p>
-      <p id="runtimeStatus">Loading Python runtime...</p>
-    </section>
+            <div class="toolbar">
+              <button class="button button-primary" id="runButton" type="button" disabled>Run Python</button>
+              <button class="button button-secondary" id="clearButton" type="button">Clear output</button>
+              <button class="button button-secondary" id="exampleButton" type="button">Use sample code</button>
+              <button class="button button-secondary" id="copyButton" type="button">Copy code</button>
+            </div>
 
-    <section class="card">
-      <h2>Output</h2>
-      <pre id="outputConsole">Python runtime is loading...</pre>
-    </section>
+            <div class="toolbar data-tools">
+              <label class="file-upload" for="dataFileInput">Upload dataset(s)</label>
+              <input id="dataFileInput" type="file" multiple accept=".csv,.json,.txt,.tsv,.xlsx,.parquet" />
+              <button class="button button-secondary" id="mountDataButton" type="button">Attach to Python</button>
+            </div>
+            <p class="panel-note" id="datasetHint">
+              Uploaded files are available in Python at <code>/home/pyodide/data/filename</code>.
+            </p>
+          </div>
 
-    <section class="card">
-      <h2>Explanation</h2>
-      <div id="humanMessage">Run your code to see explanation.</div>
-      <ul id="improvementList"></ul>
-    </section>
-  </main>
+          <div class="results-stack">
+            <section class="card output-panel">
+              <div class="panel-header">
+                <div>
+                  <p class="panel-kicker">Output</p>
+                  <h3>Program result</h3>
+                </div>
+              </div>
+              <div class="panel-note">Console output and Python errors appear here.</div>
+              <pre id="outputConsole">Python runtime is loading. Please wait...</pre>
+            </section>
+
+            <section class="card insight-panel">
+              <div class="panel-header">
+                <div>
+                  <p class="panel-kicker">Human explanation</p>
+                  <h3>Error and improvement guide</h3>
+                </div>
+              </div>
+              <div class="panel-note">A clearer explanation is shown here after each run.</div>
+              <div id="humanMessage" class="message-box neutral">
+                Run code to get a plain-English explanation here.
+              </div>
+              <ul id="improvementList" class="improvement-list">
+                <li>Improvement tips will appear here after running the code.</li>
+              </ul>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section class="info-section reveal" id="info">
+        <div class="section-heading">
+          <p class="eyebrow">Top information</p>
+          <h2>Everything you need before you start coding</h2>
+          <p class="section-text">
+            Upload data, run scripts, and get simple error explanations quickly.
+          </p>
+        </div>
+      </section>
+
+      <section class="feature-section reveal" id="features">
+        <div class="section-heading">
+          <p class="eyebrow">Features</p>
+          <h2>Built for learning and fast testing</h2>
+        </div>
+        <div class="feature-grid">
+          <article class="card feature-card">
+            <h3>Input support</h3>
+            <p>Python <code>input()</code> works through browser prompt fallback.</p>
+          </article>
+          <article class="card feature-card">
+            <h3>Dataset mounting</h3>
+            <p>Attach local datasets to <code>/home/pyodide/data</code> for quick analysis.</p>
+          </article>
+          <article class="card feature-card">
+            <h3>Mobile-friendly</h3>
+            <p>Toolbar and upload tools adapt for small screens.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/pyodide/v0.27.2/full/pyodide.js"></script>
   <script src="./script.js"></script>
