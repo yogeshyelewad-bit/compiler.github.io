@@ -48,7 +48,7 @@
           <a href="#compiler">Compiler</a>
           <a href="#info">Info</a>
           <a href="#sponsors">Sponsors</a>
-          <a href="#features">Features</a>
+          <a href="#blog">Learn Python</a>
           <a href="blog.html">Blog</a>
         </div>
       </nav>
@@ -103,7 +103,7 @@
           <p class="eyebrow">Top information</p>
           <h2>Everything you need before you start coding</h2>
           <p class="section-text">
-            Quick details first, then jump into the compiler, then configure sponsor placements.
+            Run Python first, review platform info next, then explore sponsors and learning resources at the bottom.
           </p>
         </div>
 
@@ -128,7 +128,7 @@
           <p class="eyebrow">Compiler</p>
           <h2>Browser-based Python playground</h2>
           <p class="section-text">
-            This runs Python in the browser. It works great for learning, practice, and most pure-Python scripts.
+            This runs Python in the browser and is ready for data analysis workflows with common modules like NumPy, pandas, matplotlib, and seaborn.
           </p>
         </div>
 
@@ -216,6 +216,18 @@
                 <li>Improvement tips will appear here after running the code.</li>
               </ul>
             </section>
+            <section class="card viz-panel">
+              <div class="panel-header">
+                <div>
+                  <p class="panel-kicker">Visualization</p>
+                  <h3>Chart output</h3>
+                </div>
+              </div>
+              <div class="panel-note">If your code creates matplotlib charts, they appear here.</div>
+              <div id="vizContainer" class="viz-container">
+                <p class="viz-placeholder">Run code that uses matplotlib to preview charts here.</p>
+              </div>
+            </section>
           </div>
         </div>
       </section>
@@ -258,74 +270,52 @@
 
           <a href="python-conditions.html" class="card feature-card">
             <h3>If-Else Conditions</h3>
-            <p>Make decisions in Python programs.</p>
+            <p>Understand decision making in Python.</p>
           </a>
 
           <a href="python-lists.html" class="card feature-card">
             <h3>Python Lists</h3>
-            <p>Store multiple values in one variable.</p>
+            <p>Store multiple values and work with them.</p>
           </a>
 
           <a href="python-strings.html" class="card feature-card">
             <h3>Python Strings</h3>
-            <p>Work with text in Python.</p>
+            <p>Learn text handling in Python.</p>
           </a>
 
-          <a href="python-errors.html" class="card feature-card">
-            <h3>Common Python Errors</h3>
-            <p>Fix errors easily with explanations.</p>
+          <a href="python-errors.htm" class="card feature-card">
+            <h3>Python Errors</h3>
+            <p>Fix common Python errors quickly.</p>
           </a>
 
           <a href="python-projects.html" class="card feature-card">
             <h3>Python Projects</h3>
-            <p>Build real beginner projects.</p>
+            <p>Practice with simple beginner projects.</p>
           </a>
 
           <a href="python-tips.html" class="card feature-card">
             <h3>Python Tips</h3>
-            <p>Write better and cleaner code.</p>
+            <p>Improve coding with useful tricks.</p>
           </a>
-        </div>
-      </section>
-      <section class="feature-section reveal" id="features">
-        <div class="section-heading">
-          <p class="eyebrow">Why it feels smooth</p>
-          <h2>Designed for learners, not just experienced developers.</h2>
-        </div>
-
-        <div class="feature-grid">
-          <article class="card feature-card">
-            <h3>Runs in the browser</h3>
-            <p>No server setup is required. Host it on any static platform and users can start coding immediately.</p>
-          </article>
-          <article class="card feature-card">
-            <h3>Explains errors simply</h3>
-            <p>Syntax, name, indentation, type, and runtime errors are translated into clearer everyday language.</p>
-          </article>
-          <article class="card feature-card">
-            <h3>Gives useful improvements</h3>
-            <p>The app checks for beginner-friendly code quality suggestions like naming, comments, and safer patterns.</p>
-          </article>
         </div>
       </section>
     </main>
 
     <footer class="site-footer reveal">
-      <div class="footer-grid">
-        <div class="card footer-card">
-          <p class="eyebrow">Trust and policy</p>
-          <h3>Important pages</h3>
-          <ul class="check-list">
-            <li><a href="privacy.html" aria-label="Privacy Policy page">Privacy Policy</a></li>
-            <li><a href="terms.html" aria-label="Terms and Conditions page">Terms &amp; Conditions</a></li>
-            <li><a href="contact.html" aria-label="Contact page">Contact</a></li>
-          </ul>
-        </div>
+      <div class="footer-brand">
+        <strong>YBY Compiler</strong>
+        <p>Run Python quickly in the browser and get easier explanations.</p>
+      </div>
+
+      <div class="footer-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms & Conditions</a>
+        <a href="contact.html">Contact</a>
       </div>
     </footer>
   </div>
 
-  <script defer src="https://cdn.jsdelivr.net/pyodide/v0.27.2/full/pyodide.js"></script>
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
