@@ -60,7 +60,7 @@
           <h1>Write Python, run it instantly, and understand mistakes in plain English.</h1>
           <p class="hero-text">
             YBY Compiler runs Python directly in the browser with Pyodide, shows clean output,
-            translates technical errors into human language, and gives improvement tips for beginners.
+            translates technical errors into human language, and delivers built-in data visualization previews that many basic online compilers do not provide.
           </p>
 
           <div class="hero-actions">
@@ -98,37 +98,15 @@
     </header>
 
     <main>
-      <section class="info-section reveal" id="info">
-        <div class="section-heading">
-          <p class="eyebrow">Top information</p>
-          <h2>Everything you need before you start coding</h2>
-          <p class="section-text">
-            Run Python first, review platform info next, then explore sponsors and learning resources at the bottom.
-          </p>
-        </div>
-
-        <div class="info-grid">
-          <article class="card info-card">
-            <h3>Who this is for</h3>
-            <p>Students, beginners, and creators who want an easy Python sandbox in the browser.</p>
-          </article>
-          <article class="card info-card">
-            <h3>What it runs</h3>
-            <p>Pure Python scripts with Pyodide, including readable output and simplified error help.</p>
-          </article>
-          <article class="card info-card">
-            <h3>How to use</h3>
-            <p>Type your code , get feedback,improve your code.</p>
-          </article>
-        </div>
-      </section>
-
       <section class="compiler-section reveal" id="compiler">
         <div class="section-heading">
           <p class="eyebrow">Compiler</p>
           <h2>Browser-based Python playground</h2>
           <p class="section-text">
-            This runs Python in the browser and is ready for data analysis workflows with common modules like NumPy, pandas, matplotlib, and seaborn.
+            This runs Python in the browser and supports common data-analysis workflows (NumPy, pandas, matplotlib, and seaborn when available in Pyodide).
+          </p>
+          <p class="section-text">
+            Unique value: this compiler can render chart output inside the same page so learners can see both code output and visualization together.
           </p>
         </div>
 
@@ -216,6 +194,8 @@
                 <li>Improvement tips will appear here after running the code.</li>
               </ul>
             </section>
+
+      
             <section class="card viz-panel">
               <div class="panel-header">
                 <div>
@@ -223,12 +203,45 @@
                   <h3>Chart output</h3>
                 </div>
               </div>
-              <div class="panel-note">If your code creates matplotlib charts, they appear here.</div>
+              <div class="panel-note">If your code creates charts with matplotlib/seaborn (including plt.show()), they appear here.</div>
               <div id="vizContainer" class="viz-container">
                 <p class="viz-placeholder">Run code that uses matplotlib to preview charts here.</p>
               </div>
             </section>
           </div>
+        </div>
+      </section>
+
+      <section class="info-section reveal" id="info">
+        <div class="section-heading">
+          <p class="eyebrow">Top information</p>
+          <h2>Everything you need before you start coding</h2>
+          <p class="section-text">
+            Run Python first, review platform info next, then explore sponsors and learning resources at the bottom.
+          </p>
+        </div>
+
+        <div class="info-grid">
+          <article class="card info-card">
+            <h3>Who this is for</h3>
+            <p>Students, beginners, and creators who want an easy Python sandbox in the browser.</p>
+          </article>
+          <article class="card info-card">
+            <h3>What it runs</h3>
+            <p>Pure Python scripts with Pyodide, including readable output and simplified error help.</p>
+          </article>
+          <article class="card info-card">
+            <h3>How to use</h3>
+            <p>Type code, run it, view output, and improve with guidance.</p>
+          </article>
+          <article class="card info-card">
+            <h3>Why it is unique</h3>
+            <p>Most simple browser compilers only show text output. This platform also previews data-visualization charts directly in the website.</p>
+          </article>
+          <article class="card info-card">
+            <h3>Optimized for all devices</h3>
+            <p>Responsive layout is tuned for PC, mobile, and tablet so coding and chart viewing stay smooth across screen sizes.</p>
+          </article>
         </div>
       </section>
 
@@ -270,52 +283,74 @@
 
           <a href="python-conditions.html" class="card feature-card">
             <h3>If-Else Conditions</h3>
-            <p>Understand decision making in Python.</p>
+            <p>Make decisions in Python programs.</p>
           </a>
 
           <a href="python-lists.html" class="card feature-card">
             <h3>Python Lists</h3>
-            <p>Store multiple values and work with them.</p>
+            <p>Store multiple values in one variable.</p>
           </a>
 
           <a href="python-strings.html" class="card feature-card">
             <h3>Python Strings</h3>
-            <p>Learn text handling in Python.</p>
+            <p>Work with text in Python.</p>
           </a>
 
-          <a href="python-errors.htm" class="card feature-card">
-            <h3>Python Errors</h3>
-            <p>Fix common Python errors quickly.</p>
+          <a href="python-errors.html" class="card feature-card">
+            <h3>Common Python Errors</h3>
+            <p>Fix errors easily with explanations.</p>
           </a>
 
           <a href="python-projects.html" class="card feature-card">
             <h3>Python Projects</h3>
-            <p>Practice with simple beginner projects.</p>
+            <p>Build real beginner projects.</p>
           </a>
 
           <a href="python-tips.html" class="card feature-card">
             <h3>Python Tips</h3>
-            <p>Improve coding with useful tricks.</p>
+            <p>Write better and cleaner code.</p>
           </a>
+        </div>
+      </section>
+      <section class="feature-section reveal" id="features">
+        <div class="section-heading">
+          <p class="eyebrow">Why it feels smooth</p>
+          <h2>Designed for learners, not just experienced developers.</h2>
+        </div>
+
+        <div class="feature-grid">
+          <article class="card feature-card">
+            <h3>Runs in the browser</h3>
+            <p>No server setup is required. Host it on any static platform and users can start coding immediately.</p>
+          </article>
+          <article class="card feature-card">
+            <h3>Explains errors simply</h3>
+            <p>Syntax, name, indentation, type, and runtime errors are translated into clearer everyday language.</p>
+          </article>
+          <article class="card feature-card">
+            <h3>Gives useful improvements</h3>
+            <p>The app checks for beginner-friendly code quality suggestions like naming, comments, and safer patterns.</p>
+          </article>
         </div>
       </section>
     </main>
 
     <footer class="site-footer reveal">
-      <div class="footer-brand">
-        <strong>YBY Compiler</strong>
-        <p>Run Python quickly in the browser and get easier explanations.</p>
-      </div>
-
-      <div class="footer-links">
-        <a href="privacy.html">Privacy Policy</a>
-        <a href="terms.html">Terms & Conditions</a>
-        <a href="contact.html">Contact</a>
+      <div class="footer-grid">
+        <div class="card footer-card">
+          <p class="eyebrow">Trust and policy</p>
+          <h3>Important pages</h3>
+          <ul class="check-list">
+            <li><a href="privacy.html" aria-label="Privacy Policy page">Privacy Policy</a></li>
+            <li><a href="terms.html" aria-label="Terms and Conditions page">Terms &amp; Conditions</a></li>
+            <li><a href="contact.html" aria-label="Contact page">Contact</a></li>
+          </ul>
+        </div>
       </div>
     </footer>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/pyodide/v0.27.2/full/pyodide.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
