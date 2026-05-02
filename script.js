@@ -165,6 +165,10 @@ function explainError(rawError) {
     return "A value has the right type, but the content is not acceptable. This often happens when converting text into a number that is not valid.";
   }
 
+  if (message.includes("ModuleNotFoundError: No module named 'sklearn'")) {
+    return "scikit-learn (sklearn) was not available in this session. Refresh the page and try again so the runtime can finish loading all data-analysis packages.";
+  }
+
   if (message.includes("ImportError") || message.includes("ModuleNotFoundError")) {
     return "Your code is trying to import a module that is not available in this browser runtime. Pyodide supports many Python modules, but not every package.";
   }
@@ -176,7 +180,7 @@ async function initializeRuntime() {
   try {
     pyodide = await loadPyodide();
     runtimeStatus.textContent = "Loading data analysis modules...";
-    await pyodide.loadPackage(["numpy", "pandas", "matplotlib", "micropip"]);
+    await pyodide.loadPackage(["numpy", "pandas", "matplotlib", "scikit-learn", "micropip"]);
     try {
       await pyodide.loadPackage(["seaborn"]);
     } catch (_) {
@@ -465,6 +469,7 @@ if (dataFileInput && datasetHint) {
 
 window.addEventListener("load", () => {
   initializeRuntime();
+  document.getElementById("compiler")?.scrollIntoView({ behavior: "instant", block: "start" });
 
   if (window.adsbygoogle) {
     document.querySelectorAll(".adsbygoogle").forEach(() => {
