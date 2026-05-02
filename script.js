@@ -50,7 +50,6 @@ print("Average:", average(scores))
 `
 };
 
-
 const revealItems = document.querySelectorAll(".reveal");
 
 const observer = new IntersectionObserver((entries) => {
@@ -217,7 +216,18 @@ sys.stderr = buffer
 result = {"ok": True, "output": "", "error": ""}
 
 try:
-    exec(user_code, {})
+    from js import window
+    import builtins
+
+    def browser_input(prompt_text=""):
+        value = window.prompt(str(prompt_text))
+        if value is None:
+            raise EOFError("Input cancelled by user")
+        return value
+
+    safe_globals = {"__builtins__": dict(vars(builtins))}
+    safe_globals["__builtins__"]["input"] = browser_input
+    exec(user_code, safe_globals)
 except Exception:
     result["ok"] = False
     result["error"] = traceback.format_exc()
@@ -273,7 +283,6 @@ function loadExample() {
     "Create a new function and print its result."
   ]);
 }
-
 
 function loadSelectedExampleCode() {
   const key = exampleSelect?.value || "starter";
