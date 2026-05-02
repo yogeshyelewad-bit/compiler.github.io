@@ -834,3 +834,20 @@ main {
   transform: translateY(-3px);
   transition: transform 180ms ease, border-color 180ms ease;
 }
+
+.viz-container {
+  display: grid;
+  gap: 12px;
+}
+
+.viz-placeholder {
+  margin: 0;
+  color: var(--muted);
+}
+
+.viz-image {
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: rgba(0, 0, 0, 0.2);
+}
