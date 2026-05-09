@@ -50,6 +50,16 @@ body {
   animation: wallpaperFlow 22s ease-in-out infinite alternate;
 }
 
+.live-wallpaper-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.9;
+}
+
 @keyframes wallpaperFlow {
   0% { transform: translate3d(-2%, -1%, 0) scale(1) rotate(0deg); }
   50% { transform: translate3d(2%, 1.5%, 0) scale(1.08) rotate(2deg); }
@@ -799,16 +809,20 @@ main {
   order: 1;
 }
 
-#blog {
+#features {
   order: 2;
 }
 
-#info {
+#blog {
   order: 3;
 }
 
-#sponsors {
+#info {
   order: 4;
+}
+
+#sponsors {
+  order: 5;
 }
 
 .support-card {
@@ -888,40 +902,40 @@ main {
   }
 }
 
-/* Professional tutorials zone with yellow theme */
+/* Tutorials zone refreshed color theme */
 .tutorials-zone {
-  border: 1px solid rgba(127, 231, 255, 0.34);
+  border: 1px solid rgba(170, 126, 255, 0.42);
   border-radius: 28px;
   padding: 22px;
   background:
-    radial-gradient(circle at top right, rgba(83, 185, 255, 0.2), transparent 45%),
-    linear-gradient(180deg, rgba(10, 28, 44, 0.82), rgba(6, 16, 28, 0.96));
+    radial-gradient(circle at top right, rgba(199, 134, 255, 0.24), transparent 45%),
+    linear-gradient(180deg, rgba(32, 17, 58, 0.86), rgba(15, 10, 34, 0.97));
 }
 
 .tutorials-zone .eyebrow {
-  color: #7fe7ff;
+  color: #d5b7ff;
 }
 
 .tutorials-zone h2 {
-  color: #dff7ff;
-  text-shadow: 0 0 22px rgba(127, 231, 255, 0.35);
+  color: #f6ecff;
+  text-shadow: 0 0 24px rgba(194, 134, 255, 0.4);
 }
 
 .tutorials-zone .feature-card {
-  border-color: rgba(127, 231, 255, 0.22);
-  background: linear-gradient(180deg, rgba(22, 40, 56, 0.72), rgba(13, 28, 42, 0.9));
+  border-color: rgba(188, 139, 255, 0.3);
+  background: linear-gradient(180deg, rgba(55, 34, 92, 0.72), rgba(27, 18, 52, 0.9));
 }
 
 .tutorials-zone .feature-card h3 {
-  color: #b9eeff;
+  color: #edd9ff;
 }
 
 .tutorials-zone .feature-card p {
-  color: #c8d9ea;
+  color: #dbc8f4;
 }
 
 .tutorials-zone .feature-card:hover {
-  border-color: rgba(127, 231, 255, 0.5);
+  border-color: rgba(208, 163, 255, 0.58);
   transform: translateY(-3px);
   transition: transform 180ms ease, border-color 180ms ease;
 }
