@@ -267,11 +267,14 @@ h3 {
   padding: 0 20px;
   font-weight: 700;
   cursor: pointer;
-  transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+  position: relative;
+  overflow: hidden;
+  transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease, border-color 180ms ease;
 }
 
 .button:hover:not(:disabled) {
   transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(255, 165, 66, 0.22);
 }
 
 .button:disabled {
@@ -287,8 +290,21 @@ h3 {
 
 .button-secondary {
   color: var(--text);
-  background: rgba(255, 255, 255, 0.04);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
   border: 1px solid var(--line);
+}
+
+.button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 20%, rgba(255, 255, 255, 0.22) 48%, transparent 76%);
+  transform: translateX(-120%);
+  transition: transform 380ms ease;
+}
+
+.button:hover::after {
+  transform: translateX(120%);
 }
 
 .example-select {
@@ -874,37 +890,38 @@ main {
 
 /* Professional tutorials zone with yellow theme */
 .tutorials-zone {
-  border: 1px solid rgba(255, 205, 92, 0.34);
+  border: 1px solid rgba(127, 231, 255, 0.34);
   border-radius: 28px;
   padding: 22px;
   background:
-    radial-gradient(circle at top right, rgba(255, 196, 77, 0.12), transparent 45%),
-    linear-gradient(180deg, rgba(40, 33, 18, 0.75), rgba(23, 20, 12, 0.95));
+    radial-gradient(circle at top right, rgba(83, 185, 255, 0.2), transparent 45%),
+    linear-gradient(180deg, rgba(10, 28, 44, 0.82), rgba(6, 16, 28, 0.96));
 }
 
 .tutorials-zone .eyebrow {
-  color: #ffd166;
+  color: #7fe7ff;
 }
 
 .tutorials-zone h2 {
-  color: #ffefbf;
+  color: #dff7ff;
+  text-shadow: 0 0 22px rgba(127, 231, 255, 0.35);
 }
 
 .tutorials-zone .feature-card {
-  border-color: rgba(255, 205, 92, 0.22);
-  background: linear-gradient(180deg, rgba(58, 47, 24, 0.62), rgba(35, 29, 15, 0.86));
+  border-color: rgba(127, 231, 255, 0.22);
+  background: linear-gradient(180deg, rgba(22, 40, 56, 0.72), rgba(13, 28, 42, 0.9));
 }
 
 .tutorials-zone .feature-card h3 {
-  color: #ffe3a2;
+  color: #b9eeff;
 }
 
 .tutorials-zone .feature-card p {
-  color: #ead7ad;
+  color: #c8d9ea;
 }
 
 .tutorials-zone .feature-card:hover {
-  border-color: rgba(255, 205, 92, 0.46);
+  border-color: rgba(127, 231, 255, 0.5);
   transform: translateY(-3px);
   transition: transform 180ms ease, border-color 180ms ease;
 }
