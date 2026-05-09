@@ -35,6 +35,27 @@ body {
   overflow-x: hidden;
 }
 
+.live-wallpaper {
+  position: fixed;
+  inset: -15%;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(111, 208, 255, 0.26), transparent 34%),
+    radial-gradient(circle at 82% 14%, rgba(255, 155, 72, 0.24), transparent 30%),
+    radial-gradient(circle at 78% 78%, rgba(160, 123, 255, 0.22), transparent 34%),
+    radial-gradient(circle at 18% 82%, rgba(109, 255, 198, 0.18), transparent 34%);
+  filter: blur(18px) saturate(120%);
+  transform-origin: center;
+  animation: wallpaperFlow 22s ease-in-out infinite alternate;
+}
+
+@keyframes wallpaperFlow {
+  0% { transform: translate3d(-2%, -1%, 0) scale(1) rotate(0deg); }
+  50% { transform: translate3d(2%, 1.5%, 0) scale(1.08) rotate(2deg); }
+  100% { transform: translate3d(-1%, 1%, 0) scale(1.04) rotate(-1deg); }
+}
+
 body::before {
   content: "";
   position: fixed;
@@ -50,6 +71,7 @@ body::before {
 .noise {
   position: fixed;
   inset: 0;
+  z-index: 2;
   opacity: 0.06;
   pointer-events: none;
   background-image:
@@ -66,6 +88,7 @@ button {
 
 .site-shell {
   position: relative;
+  z-index: 3;
   width: min(1240px, calc(100% - 28px));
   margin: 0 auto;
   padding: 16px 0 64px;
@@ -760,12 +783,16 @@ main {
   order: 1;
 }
 
-#info {
+#blog {
   order: 2;
 }
 
-#sponsors {
+#info {
   order: 3;
+}
+
+#sponsors {
+  order: 4;
 }
 
 .support-card {
@@ -815,6 +842,33 @@ main {
   .data-tools .file-upload,
   .data-tools input {
     width: 100%;
+  }
+
+  .hero-grid {
+    gap: 16px;
+    padding-top: 24px;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 11vw, 2.7rem);
+    line-height: 1.15;
+  }
+
+  h2 {
+    font-size: clamp(1.55rem, 8vw, 2.1rem);
+    line-height: 1.2;
+  }
+
+  .section-text,
+  .hero-text,
+  .feature-card p {
+    font-size: 0.96rem;
+    line-height: 1.6;
+  }
+
+  .live-wallpaper {
+    filter: blur(14px) saturate(118%);
+    animation-duration: 16s;
   }
 }
 
@@ -870,4 +924,10 @@ main {
   border-radius: 14px;
   border: 1px solid var(--line);
   background: rgba(0, 0, 0, 0.2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-wallpaper {
+    animation: none;
+  }
 }
