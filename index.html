@@ -131,7 +131,21 @@
               <input id="dataFileInput" type="file" multiple accept=".csv,.json,.txt,.tsv,.xlsx,.parquet" />
               <button class="button button-secondary" id="mountDataButton" type="button">Attach to Python</button>
             </div>
-            <p class="panel-note" id="datasetHint">For data visualization and anylysis it supports Python standard libraries, NumPy, Pandas, Matplotlib, Seaborn and Scikit-learn,!) Step 1: Click Choose file and select your dataset.2) Step 2: Click Attach to Python.USE THIS PATH IN CODE <code>df = pd.read_csv("/home/pyodide/data/YourFilename.csv")</code>.</p>
+           <p class="panel-note" id="datasetHint">
+             For data visualization and analysis it supports Python standard libraries, NumPy, Pandas, Matplotlib, Seaborn and Scikit-learn.
+             <br><br>
+
+            1) Step 1: Click Choose File and select your dataset.
+            <br>
+
+           2) Step 2: Click Attach to Python.
+            <br><br>
+
+            USE THIS PATH IN CODE:
+           <br>
+
+            <code>df = pd.read_csv("/home/pyodide/data/YourFilename.csv")</code>
+          </p>
           </div>
 
           <div class="results-stack">
