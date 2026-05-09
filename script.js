@@ -1,499 +1,950 @@
-const starterCode = `# Welcome to YBY Compiler
-# Write Python code and click "Run Python"
-
-def greet(name):
-    return f"Hello, {name}!"
-
-user_name = "YBY user"
-message = greet(user_name)
-print(message)
-
-numbers = [4, 7, 9]
-print("Total:", sum(numbers))
-`;
-
-const codeInput = document.getElementById("codeInput");
-const outputConsole = document.getElementById("outputConsole");
-const humanMessage = document.getElementById("humanMessage");
-const improvementList = document.getElementById("improvementList");
-const runtimeStatus = document.getElementById("runtimeStatus");
-const runButton = document.getElementById("runButton");
-const clearButton = document.getElementById("clearButton");
-const exampleButton = document.getElementById("exampleButton");
-const loadExampleHero = document.getElementById("loadExampleHero");
-const copyButton = document.getElementById("copyButton");
-const exampleSelect = document.getElementById("exampleSelect");
-const loadSelectedExample = document.getElementById("loadSelectedExample");
-const dataFileInput = document.getElementById("dataFileInput");
-const mountDataButton = document.getElementById("mountDataButton");
-const datasetHint = document.getElementById("datasetHint");
-const vizContainer = document.getElementById("vizContainer");
-
-let pyodide;
-let runtimeReady = false;
-let uploadedDataFiles = [];
-
-codeInput.value = starterCode;
-
-const samplePrograms = {
-  starter: starterCode,
-  loop: `# Loop and condition example
-
-for number in range(1, 6):
-    if number % 2 == 0:
-        print(number, "is even")
-    else:
-        print(number, "is odd")
-`,
-  function: `# Function + list example
-
-def average(values):
-    return sum(values) / len(values)
-
-scores = [76, 88, 91, 84]
-print("Average:", average(scores))
-`
-};
-
-const revealItems = document.querySelectorAll(".reveal");
-
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add("is-visible");
-      observer.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.16 });
-
-revealItems.forEach((item) => observer.observe(item));
-
-function setHumanMessage(text, tone = "neutral") {
-  humanMessage.textContent = text;
-  humanMessage.className = `message-box ${tone}`;
+:root {
+  --bg: #0d0f12;
+  --bg-soft: #171a20;
+  --panel: rgba(20, 24, 31, 0.86);
+  --panel-strong: rgba(15, 18, 24, 0.96);
+  --line: rgba(255, 255, 255, 0.08);
+  --text: #f5f1e8;
+  --muted: #c5bdad;
+  --accent: #ff7a18;
+  --accent-soft: #ffb347;
+  --accent-deep: #ff5a2a;
+  --success: #93f5a7;
+  --error: #ff9b93;
+  --neutral: #ffe2a8;
+  --shadow: 0 30px 80px rgba(0, 0, 0, 0.28);
 }
 
-function setImprovements(items) {
-  improvementList.innerHTML = "";
-  items.forEach((item) => {
-    const li = document.createElement("li");
-    li.textContent = item;
-    improvementList.appendChild(li);
-  });
+* {
+  box-sizing: border-box;
 }
 
-function analyzeCode(code, hadError) {
-  const improvements = [];
-  const trimmed = code.trim();
-  const lines = code.split("\n");
-
-  if (!trimmed) {
-    improvements.push("Start with a simple print statement like print('Hello') to test the compiler.");
-  }
-
-  if (!/print\s*\(/.test(code)) {
-    improvements.push("Consider adding print() statements so users can clearly see the result of the program.");
-  }
-
-  if (!/#/.test(code)) {
-    improvements.push("Add a short comment for important parts so beginners can understand the code faster.");
-  }
-
-  if (lines.length > 18) {
-    improvements.push("Your code is getting longer. Splitting repeated logic into small functions will make it easier to maintain.");
-  }
-
-  if (/input\s*\(/.test(code)) {
-    improvements.push("If you use input(), guide the user with a clear message so they know what to type.");
-  }
-
-  if (/while\s+True/.test(code)) {
-    improvements.push("A while True loop should usually include a clear break condition so it does not run forever.");
-  }
-
-  if (/^[a-z]$/m.test(code)) {
-    improvements.push("Very short variable names can be hard to read. Use names that describe the value more clearly.");
-  }
-
-  if (/except\s*:/.test(code)) {
-    improvements.push("Avoid a blank except block. Catch a specific exception so debugging stays easier.");
-  }
-
-  if (/==\s*True|==\s*False/.test(code)) {
-    improvements.push("You can simplify comparisons to True or False by checking the value directly.");
-  }
-
-  if (!hadError && improvements.length === 0) {
-    improvements.push("Nice work. Your code looks clean for this run. You can improve it further by adding more meaningful test cases.");
-  }
-
-  return improvements.slice(0, 5);
+html {
+  scroll-behavior: smooth;
 }
 
-function explainError(rawError) {
-  const message = String(rawError || "");
-
-  if (message.includes("SyntaxError")) {
-    return "There is a syntax mistake in your code. This usually means Python found something written in the wrong format, like a missing colon, bracket, or quote.";
-  }
-
-  if (message.includes("IndentationError")) {
-    return "Your indentation is not valid. Python uses spacing to understand blocks of code, so make sure lines inside functions, loops, and conditions are aligned properly.";
-  }
-
-  if (message.includes("NameError")) {
-    return "Python found a name that does not exist yet. This often means a variable or function was used before it was created, or its spelling does not match.";
-  }
-
-  if (message.includes("TypeError")) {
-    return "Two values are being used in an incompatible way. For example, you may be mixing text and numbers, or calling something that is not a function.";
-  }
-
-  if (message.includes("ZeroDivisionError")) {
-    return "Your code tried to divide by zero. Python stops because dividing by zero is mathematically invalid.";
-  }
-
-  if (message.includes("IndexError")) {
-    return "Your code tried to access a list position that does not exist. Check the list length and make sure the index is inside the valid range.";
-  }
-
-  if (message.includes("KeyError")) {
-    return "Your code tried to use a dictionary key that is not available. Make sure the key exists before reading it.";
-  }
-
-  if (message.includes("ValueError")) {
-    return "A value has the right type, but the content is not acceptable. This often happens when converting text into a number that is not valid.";
-  }
-
-  if (message.includes("ModuleNotFoundError: No module named 'sklearn'")) {
-    return "scikit-learn (sklearn) was not available in this session. Refresh the page and try again so the runtime can finish loading all data-analysis packages.";
-  }
-
-  if (message.includes("ImportError") || message.includes("ModuleNotFoundError")) {
-    return "Your code is trying to import a module that is not available in this browser runtime. Pyodide supports many Python modules, but not every package.";
-  }
-
-  return "Your code hit a runtime error. Read the error details below and check the line that caused the problem. A small fix in names, values, or structure will usually solve it.";
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Outfit", sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at top left, rgba(255, 122, 24, 0.2), transparent 30%),
+    radial-gradient(circle at 85% 15%, rgba(255, 179, 71, 0.15), transparent 24%),
+    linear-gradient(145deg, #0b0d10 0%, #13161c 48%, #0d1015 100%);
+  overflow-x: hidden;
 }
 
-async function initializeRuntime() {
-  try {
-    pyodide = await loadPyodide();
-    runtimeStatus.textContent = "Loading data analysis modules...";
-    await pyodide.loadPackage(["numpy", "pandas", "matplotlib", "scikit-learn", "micropip"]);
-    try {
-      await pyodide.loadPackage(["seaborn"]);
-    } catch (_) {
-      try {
-        await pyodide.runPythonAsync(`
-import micropip
-await micropip.install("seaborn")
-`);
-      } catch (_) {
-        // Seaborn may be unavailable if package indexes are blocked.
-      }
-    }
-    runtimeReady = true;
-    runtimeStatus.textContent = "Python runtime ready";
-    runtimeStatus.classList.add("ready");
-    outputConsole.textContent = "Python runtime loaded successfully. You can run code now.";
-    runButton.disabled = false;
-  } catch (error) {
-    runtimeStatus.textContent = "Runtime failed to load";
-    runtimeStatus.classList.add("error");
-    outputConsole.textContent = `Unable to load Python runtime.\n${error}`;
-    setHumanMessage(
-      "The Python engine could not load. Make sure internet access is available because Pyodide is loaded from a CDN.",
-      "error"
-    );
-    setImprovements([
-      "Check your internet connection.",
-      "Make sure the Pyodide CDN script is not blocked.",
-      "Open the browser console if the problem continues."
-    ]);
+.live-wallpaper {
+  position: fixed;
+  inset: -15%;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(111, 208, 255, 0.26), transparent 34%),
+    radial-gradient(circle at 82% 14%, rgba(255, 155, 72, 0.24), transparent 30%),
+    radial-gradient(circle at 78% 78%, rgba(160, 123, 255, 0.22), transparent 34%),
+    radial-gradient(circle at 18% 82%, rgba(109, 255, 198, 0.18), transparent 34%);
+  filter: blur(18px) saturate(120%);
+  transform-origin: center;
+  animation: wallpaperFlow 22s ease-in-out infinite alternate;
+}
+
+@keyframes wallpaperFlow {
+  0% { transform: translate3d(-2%, -1%, 0) scale(1) rotate(0deg); }
+  50% { transform: translate3d(2%, 1.5%, 0) scale(1.08) rotate(2deg); }
+  100% { transform: translate3d(-1%, 1%, 0) scale(1.04) rotate(-1deg); }
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 42px 42px;
+  pointer-events: none;
+  mask-image: radial-gradient(circle at center, black 40%, transparent 88%);
+}
+
+.noise {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  opacity: 0.06;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.7) 0, transparent 1px),
+    radial-gradient(circle at 80% 40%, rgba(255, 255, 255, 0.7) 0, transparent 1px),
+    radial-gradient(circle at 60% 80%, rgba(255, 255, 255, 0.7) 0, transparent 1px);
+  background-size: 180px 180px;
+}
+
+a,
+button {
+  font: inherit;
+}
+
+.site-shell {
+  position: relative;
+  z-index: 3;
+  width: min(1240px, calc(100% - 28px));
+  margin: 0 auto;
+  padding: 16px 0 64px;
+}
+
+.hero,
+.info-section,
+.compiler-section,
+.ad-strip,
+.feature-section,
+.adsense-section,
+.site-footer {
+  padding-top: 24px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 16px 20px;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: rgba(17, 20, 26, 0.7);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--shadow);
+}
+
+.brand,
+.nav-links a,
+.button {
+  text-decoration: none;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  color: var(--text);
+}
+
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-soft) 100%);
+  color: #201105;
+  font-weight: 800;
+  font-size: 1.35rem;
+  box-shadow: 0 14px 30px rgba(255, 122, 24, 0.35);
+}
+
+.brand-copy {
+  display: grid;
+  gap: 4px;
+}
+
+.brand-copy strong {
+  font-size: 1rem;
+}
+
+.brand-copy small {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.nav-links a {
+  color: var(--muted);
+}
+
+.nav-links a:hover {
+  color: var(--text);
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.08fr 0.92fr;
+  gap: 24px;
+  align-items: center;
+  padding: 44px 0 12px;
+}
+
+.eyebrow,
+.panel-kicker {
+  margin: 0 0 10px;
+  color: var(--accent-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1;
+}
+
+h1 {
+  font-size: clamp(3rem, 6vw, 5.7rem);
+  max-width: 11ch;
+}
+
+h2 {
+  font-size: clamp(2rem, 4.2vw, 3.4rem);
+  max-width: 12ch;
+}
+
+h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0;
+}
+
+.hero-text,
+.section-text,
+.feature-card p,
+.adsense-info li,
+.message-box,
+.improvement-list li {
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.hero-text {
+  max-width: 62ch;
+  margin: 18px 0 28px;
+  font-size: 1.02rem;
+}
+
+.hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 179, 71, 0.2);
+  background: rgba(255, 179, 71, 0.08);
+  color: #ffe5bf;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.hero-actions,
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.button {
+  border: 0;
+  border-radius: 999px;
+  min-height: 48px;
+  padding: 0 20px;
+  font-weight: 700;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease, border-color 180ms ease;
+}
+
+.button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(255, 165, 66, 0.22);
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.button-primary {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-soft) 100%);
+  color: #231307;
+  box-shadow: 0 16px 36px rgba(255, 122, 24, 0.32);
+}
+
+.button-secondary {
+  color: var(--text);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+  border: 1px solid var(--line);
+}
+
+.button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 20%, rgba(255, 255, 255, 0.22) 48%, transparent 76%);
+  transform: translateX(-120%);
+  transition: transform 380ms ease;
+}
+
+.button:hover::after {
+  transform: translateX(120%);
+}
+
+.example-select {
+  min-height: 48px;
+  min-width: 210px;
+  border-radius: 999px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 214, 92, 0.72);
+  background: linear-gradient(180deg, #ffe07a, #f6bf2f);
+  color: #2a1800;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.example-select:focus {
+  outline: none;
+  border-color: rgba(255, 179, 71, 0.7);
+  box-shadow: 0 0 0 3px rgba(255, 122, 24, 0.14);
+}
+
+.example-load-btn {
+  border-color: rgba(255, 214, 92, 0.72);
+  background: linear-gradient(135deg, #ffe07a 0%, #f6bf2f 100%);
+  color: #2a1800;
+  box-shadow: 0 10px 24px rgba(246, 191, 47, 0.35);
+}
+
+.hero-points,
+.check-list,
+.improvement-list {
+  margin: 22px 0 0;
+  padding-left: 20px;
+}
+
+.hero-points li,
+.check-list li,
+.improvement-list li {
+  margin-bottom: 8px;
+}
+
+.hero-card {
+  position: relative;
+}
+
+.mini-terminal,
+.card {
+  border: 1px solid var(--line);
+  border-radius: 30px;
+  background: linear-gradient(180deg, rgba(24, 28, 36, 0.92), rgba(16, 19, 24, 0.94));
+  box-shadow: var(--shadow);
+}
+
+.mini-terminal {
+  padding: 18px;
+  transform: rotate(-2.5deg);
+}
+
+.mini-top {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.mini-top span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.mini-top span:first-child {
+  background: #ff7b72;
+}
+
+.mini-top span:nth-child(2) {
+  background: #ffd166;
+}
+
+.mini-top span:nth-child(3) {
+  background: #8be28b;
+}
+
+.mini-code,
+textarea,
+pre {
+  font-family: "JetBrains Mono", monospace;
+}
+
+.mini-code {
+  color: #efe6d8;
+  font-size: 0.96rem;
+}
+
+.prompt,
+.success,
+.hint-line {
+  color: var(--success);
+}
+
+.section-heading {
+  margin-bottom: 22px;
+}
+
+.quick-guide {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+  padding: 18px;
+  background:
+    linear-gradient(180deg, rgba(31, 35, 45, 0.92), rgba(20, 24, 31, 0.94)),
+    radial-gradient(circle at top right, rgba(255, 122, 24, 0.14), transparent 32%);
+}
+
+.guide-step {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 12px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.guide-step span {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent-soft));
+  color: #281507;
+  font-weight: 800;
+}
+
+.guide-step strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.98rem;
+}
+
+.guide-step p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+  font-size: 0.93rem;
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1.12fr) minmax(300px, 0.88fr);
+  gap: 20px;
+}
+
+.results-stack {
+  display: grid;
+  gap: 20px;
+}
+
+.card {
+  padding: 22px;
+}
+
+.editor-panel {
+  background:
+    linear-gradient(180deg, rgba(26, 30, 39, 0.96), rgba(15, 18, 24, 0.96)),
+    radial-gradient(circle at top, rgba(255, 179, 71, 0.08), transparent 36%);
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.panel-note {
+  margin: -4px 0 14px;
+  color: #d9cfbf;
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: rgba(255, 226, 168, 0.12);
+  color: var(--neutral);
+  border: 1px solid rgba(255, 226, 168, 0.22);
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.status-pill.ready {
+  background: rgba(147, 245, 167, 0.12);
+  color: var(--success);
+  border-color: rgba(147, 245, 167, 0.22);
+}
+
+.status-pill.error {
+  background: rgba(255, 155, 147, 0.12);
+  color: var(--error);
+  border-color: rgba(255, 155, 147, 0.22);
+}
+
+textarea {
+  width: 100%;
+  min-height: 480px;
+  resize: vertical;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 22px;
+  padding: 18px;
+  background:
+    linear-gradient(180deg, rgba(8, 10, 15, 0.96), rgba(11, 14, 20, 0.96));
+  color: #fff5eb;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  outline: none;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+textarea:focus {
+  border-color: rgba(255, 179, 71, 0.45);
+  box-shadow: 0 0 0 4px rgba(255, 122, 24, 0.12);
+}
+
+.toolbar {
+  margin-top: 16px;
+}
+
+pre {
+  margin: 0;
+  min-height: 200px;
+  max-height: 340px;
+  overflow: auto;
+  padding: 18px;
+  border-radius: 22px;
+  background: rgba(7, 9, 13, 0.92);
+  color: #efe6d8;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  word-break: break-word;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.message-box {
+  min-height: 116px;
+  padding: 18px;
+  border-radius: 22px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.03);
+  margin-bottom: 14px;
+}
+
+.message-box.success {
+  color: #dffbe4;
+  background: rgba(147, 245, 167, 0.08);
+  border-color: rgba(147, 245, 167, 0.2);
+}
+
+.message-box.error {
+  color: #ffe1de;
+  background: rgba(255, 155, 147, 0.08);
+  border-color: rgba(255, 155, 147, 0.2);
+}
+
+.message-box.neutral {
+  color: #fff1d0;
+  background: rgba(255, 226, 168, 0.06);
+  border-color: rgba(255, 226, 168, 0.18);
+}
+
+.ad-strip .ad-card,
+.side-ad {
+  min-height: 220px;
+}
+
+.feature-grid,
+.info-grid,
+.adsense-grid {
+  display: grid;
+  gap: 18px;
+}
+
+.feature-grid,
+.info-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.info-card {
+  background:
+    linear-gradient(180deg, rgba(31, 35, 45, 0.92), rgba(20, 24, 31, 0.94)),
+    radial-gradient(circle at top right, rgba(255, 122, 24, 0.14), transparent 32%);
+}
+
+.adsense-grid {
+  grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+}
+
+.ad-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.ads-note {
+  margin: 0 0 16px;
+  color: #ffe5bf;
+  background: rgba(255, 179, 71, 0.08);
+  border: 1px solid rgba(255, 179, 71, 0.18);
+  border-radius: 16px;
+  padding: 12px 14px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.footer-card a {
+  color: #ffe8c4;
+}
+
+.output-panel,
+.insight-panel {
+  position: relative;
+  overflow: hidden;
+}
+
+.output-panel::after,
+.insight-panel::after {
+  content: "";
+  position: absolute;
+  inset: auto -20% -45% auto;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 122, 24, 0.1), transparent 68%);
+  pointer-events: none;
+}
+
+code {
+  font-family: "JetBrains Mono", monospace;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 700ms ease, transform 700ms ease;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+@media (max-width: 980px) {
+  .hero-grid,
+  .workspace,
+  .feature-grid,
+  .info-grid,
+  .adsense-grid,
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .quick-guide {
+    grid-template-columns: 1fr;
+  }
+
+  h1,
+  h2 {
+    max-width: none;
+  }
+
+  .mini-terminal {
+    transform: none;
   }
 }
 
-async function runCode() {
-  if (!runtimeReady) {
-    setHumanMessage("The Python runtime is still loading. Please wait a moment and try again.", "neutral");
-    return;
+@media (max-width: 680px) {
+  .site-shell {
+    width: min(100% - 18px, 1240px);
   }
 
-  const code = codeInput.value;
-  outputConsole.textContent = "Running Python code...";
-  setHumanMessage("Running your code now.", "neutral");
-  setImprovements(["Checking code quality and waiting for the program output..."]);
+  .topbar,
+  .card,
+  .mini-terminal {
+    border-radius: 24px;
+  }
 
-  pyodide.globals.set("user_code", code);
+  .topbar {
+    padding: 14px 16px;
+  }
 
-  const runner = `
-import sys
-import io
-import traceback
-import json
+  .nav-links {
+    gap: 12px;
+  }
 
-buffer = io.StringIO()
-sys.stdout = buffer
-sys.stderr = buffer
-result = {"ok": True, "output": "", "error": "", "plots": []}
+  textarea {
+    min-height: 360px;
+  }
 
-try:
-    from js import window
-    import builtins
+  .panel-header {
+    flex-direction: column;
+  }
+}
+.blog-container {
+  max-width: 900px;
+  margin: auto;
+  padding: 30px 20px;
+}
 
-    def browser_input(prompt_text=""):
-        value = window.prompt(str(prompt_text))
-        if value is None:
-            raise EOFError("Input cancelled by user")
-        return value
+.blog-container h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
 
-    safe_globals = {"__builtins__": dict(vars(builtins))}
-    safe_globals["__builtins__"]["input"] = browser_input
-    try:
-        import matplotlib
-        matplotlib.use("AGG")
-        import matplotlib.pyplot as plt
-        original_show = plt.show
+.blog-container h2 {
+  margin-top: 30px;
+  color: #ffb347;
+}
 
-        def silent_show(*args, **kwargs):
-            return None
+.blog-container p {
+  line-height: 1.8;
+  color: #c5bdad;
+}
 
-        plt.show = silent_show
-    except Exception:
-        plt = None
+.blog-container pre {
+  background: #111;
+  padding: 15px;
+  border-radius: 10px;
+  overflow-x: auto;
+}
 
-    exec(user_code, safe_globals)
-    try:
-        import matplotlib.pyplot as plt
-        import base64
-        from io import BytesIO
+.back-link {
+  display: inline-block;
+  margin-top: 20px;
+  color: #ffb347;
+}
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+  gap: 20px;
+}
 
-        figure_numbers = set(plt.get_fignums())
+.blog-card {
+  background: #111;
+  border-radius: 15px;
+  overflow: hidden;
+  text-decoration: none;
+  color: white;
+  transition: 0.3s;
+}
 
-        for value in safe_globals.values():
-            fig_attr = getattr(value, "fig", None)
-            if fig_attr is not None:
-                try:
-                    figure_numbers.add(fig_attr.number)
-                except Exception:
-                    pass
+.blog-card:hover {
+  transform: scale(1.05);
+}
 
-        for fig_number in sorted(figure_numbers):
-            fig = plt.figure(fig_number)
-            chart_buffer = BytesIO()
-            fig.savefig(chart_buffer, format="png", bbox_inches="tight")
-            chart_buffer.seek(0)
-            encoded = base64.b64encode(chart_buffer.read()).decode("utf-8")
-            result["plots"].append(encoded)
+.blog-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
 
-        if figure_numbers:
-            plt.close("all")
-    except Exception:
-        pass
-except Exception:
-    result["ok"] = False
-    result["error"] = traceback.format_exc()
-finally:
-    result["output"] = buffer.getvalue()
-    sys.stdout = sys.__stdout__
-    sys.stderr = sys.__stderr__
+.blog-card h3 {
+  padding: 15px;
+}
 
-json.dumps(result)
-`;
+main {
+  display: flex;
+  flex-direction: column;
+}
 
-  try {
-    const rawResult = await pyodide.runPythonAsync(runner);
-    const result = JSON.parse(rawResult);
-    const outputText = result.output || "";
-    const errorText = result.error || "";
-    const plots = Array.isArray(result.plots) ? result.plots : [];
-    const improvements = analyzeCode(code, !result.ok);
+#compiler {
+  order: 1;
+}
 
-    renderPlots(plots);
+#blog {
+  order: 2;
+}
 
-    if (result.ok) {
-      outputConsole.textContent = outputText || "Program finished successfully with no printed output.";
-      setHumanMessage(
-        "Your code ran successfully. If you want users to see more results, add more print() statements or clearer messages.",
-        "success"
-      );
-    } else {
-      outputConsole.textContent = `${outputText}${outputText ? "\n" : ""}${errorText}`.trim();
-      setHumanMessage(explainError(errorText), "error");
-    }
+#info {
+  order: 3;
+}
 
-    setImprovements(improvements);
-  } catch (error) {
-    outputConsole.textContent = String(error);
-    setHumanMessage(explainError(error), "error");
-    setImprovements(analyzeCode(code, true));
+#sponsors {
+  order: 4;
+}
+
+.support-card {
+  margin-top: 16px;
+  padding: 20px;
+}
+
+.support-card h3 {
+  margin-bottom: 10px;
+}
+
+.support-list {
+  margin-top: 12px;
+}
+
+.data-tools {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.file-upload {
+  min-height: 42px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.04);
+  cursor: pointer;
+}
+
+#dataFileInput {
+  color: var(--muted);
+}
+
+@media (max-width: 680px) {
+  .toolbar,
+  .data-tools {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .toolbar .button,
+  .toolbar .example-select,
+  .data-tools .button,
+  .data-tools .file-upload,
+  .data-tools input {
+    width: 100%;
+  }
+
+  .hero-grid {
+    gap: 16px;
+    padding-top: 24px;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 11vw, 2.7rem);
+    line-height: 1.15;
+  }
+
+  h2 {
+    font-size: clamp(1.55rem, 8vw, 2.1rem);
+    line-height: 1.2;
+  }
+
+  .section-text,
+  .hero-text,
+  .feature-card p {
+    font-size: 0.96rem;
+    line-height: 1.6;
+  }
+
+  .live-wallpaper {
+    filter: blur(14px) saturate(118%);
+    animation-duration: 16s;
   }
 }
 
-
-function renderPlots(plots) {
-  if (!vizContainer) return;
-  vizContainer.innerHTML = "";
-
-  if (!plots.length) {
-    vizContainer.innerHTML = '<p class="viz-placeholder">No chart output for this run.</p>';
-    return;
-  }
-
-  plots.forEach((plot, index) => {
-    const img = document.createElement("img");
-    img.src = `data:image/png;base64,${plot}`;
-    img.alt = `Generated chart ${index + 1}`;
-    img.className = "viz-image";
-    vizContainer.appendChild(img);
-  });
+/* Professional tutorials zone with yellow theme */
+.tutorials-zone {
+  border: 1px solid rgba(127, 231, 255, 0.34);
+  border-radius: 28px;
+  padding: 22px;
+  background:
+    radial-gradient(circle at top right, rgba(83, 185, 255, 0.2), transparent 45%),
+    linear-gradient(180deg, rgba(10, 28, 44, 0.82), rgba(6, 16, 28, 0.96));
 }
 
-function clearOutput() {
-  outputConsole.textContent = "Console cleared. Run your Python code again.";
-  setHumanMessage("Output cleared. You can run the code again whenever you are ready.", "neutral");
-  setImprovements(["Try a new example, edit the current code, and click Run Python."]);
-  if (vizContainer) {
-    vizContainer.innerHTML = '<p class="viz-placeholder">Run code that uses matplotlib to preview charts here.</p>';
-  }
+.tutorials-zone .eyebrow {
+  color: #7fe7ff;
 }
 
-function loadExample() {
-  codeInput.value = starterCode;
-
-  codeInput.focus();
-  codeInput.setSelectionRange(codeInput.value.length, codeInput.value.length);
-  setHumanMessage("Sample Python code loaded. Click Run Python to test it.", "neutral");
-  setImprovements([
-    "Change the name value to see different output.",
-    "Add another number into the list and rerun the code.",
-    "Create a new function and print its result."
-  ]);
+.tutorials-zone h2 {
+  color: #dff7ff;
+  text-shadow: 0 0 22px rgba(127, 231, 255, 0.35);
 }
 
-function loadSelectedExampleCode() {
-  const key = exampleSelect?.value || "starter";
-  codeInput.value = samplePrograms[key] || starterCode;
-  codeInput.focus();
-  codeInput.setSelectionRange(codeInput.value.length, codeInput.value.length);
-  setHumanMessage("Selected example loaded. Click Run Python to execute it.", "neutral");
-  setImprovements([
-    "Modify one line and run again.",
-    "Try adding your own print() outputs.",
-    "Compare how each sample is structured."
-  ]);
+.tutorials-zone .feature-card {
+  border-color: rgba(127, 231, 255, 0.22);
+  background: linear-gradient(180deg, rgba(22, 40, 56, 0.72), rgba(13, 28, 42, 0.9));
 }
 
-async function copyCode() {
-  try {
-    await navigator.clipboard.writeText(codeInput.value);
-    setHumanMessage("Code copied to your clipboard.", "success");
-    setImprovements([
-      "Paste the code anywhere you want.",
-      "Keep editing here and run it again whenever you need.",
-      "Use sample code if you want a fresh starting point."
-    ]);
-  } catch (error) {
-    setHumanMessage("Copy failed in this browser. You can still select the code manually.", "error");
-  }
+.tutorials-zone .feature-card h3 {
+  color: #b9eeff;
 }
 
-async function mountUploadedFiles() {
-  if (!runtimeReady || !pyodide) {
-    setHumanMessage("Runtime is not ready yet. Wait a moment and try attaching files again.", "error");
-    return;
-  }
-
-  const files = Array.from(dataFileInput?.files || []);
-  if (files.length === 0) {
-    setHumanMessage("Choose at least one file first, then click Attach to Python.", "neutral");
-    return;
-  }
-
-  const baseDir = "/home/pyodide/data";
-  const mntDir = "/mnt/data";
-  pyodide.FS.mkdirTree(baseDir);
-  pyodide.FS.mkdirTree(mntDir);
-
-  uploadedDataFiles = [];
-
-  for (const file of files) {
-    const bytes = new Uint8Array(await file.arrayBuffer());
-    const safeName = file.name.replace(/[^a-zA-Z0-9._ -]/g, "_");
-    const originalNamePath = `${baseDir}/${file.name}`;
-    const safeNamePath = `${baseDir}/${safeName}`;
-
-    pyodide.FS.writeFile(originalNamePath, bytes);
-    if (safeName !== file.name) {
-      pyodide.FS.writeFile(safeNamePath, bytes);
-    }
-
-    pyodide.FS.writeFile(`${mntDir}/${file.name}`, bytes);
-    if (safeName !== file.name) {
-      pyodide.FS.writeFile(`${mntDir}/${safeName}`, bytes);
-    }
-
-    uploadedDataFiles.push(file.name);
-    if (safeName !== file.name) uploadedDataFiles.push(safeName);
-  }
-  pyodide.globals.set("uploaded_data_files", uploadedDataFiles);
-
-  const fileList = uploadedDataFiles.map((name) => `- ${name}`).join("\n");
-  setHumanMessage("Dataset files attached. Use pandas/read_csv with /home/pyodide/data/<filename> or /mnt/data/<filename>.", "success");
-  setImprovements([
-    "Use pandas as pd to load CSV/TSV/JSON datasets.",
-    "Print df.head() and df.info() to verify schema quickly.",
-    "Use the uploaded_data_files Python variable to see available files."
-  ]);
-  outputConsole.textContent = `Attached ${uploadedDataFiles.length} file(s) to Python runtime:\n${fileList}`;
+.tutorials-zone .feature-card p {
+  color: #c8d9ea;
 }
 
-function bindClick(element, handler) {
-  if (element) {
-    element.addEventListener("click", handler);
-  }
+.tutorials-zone .feature-card:hover {
+  border-color: rgba(127, 231, 255, 0.5);
+  transform: translateY(-3px);
+  transition: transform 180ms ease, border-color 180ms ease;
 }
 
-bindClick(runButton, runCode);
-bindClick(clearButton, clearOutput);
-bindClick(exampleButton, loadExample);
-bindClick(loadSelectedExample, loadSelectedExampleCode);
-bindClick(loadExampleHero, () => {
-  loadExample();
-  document.getElementById("compiler")?.scrollIntoView({ behavior: "smooth", block: "start" });
-});
-bindClick(copyButton, copyCode);
-bindClick(mountDataButton, mountUploadedFiles);
-
-document.addEventListener("keydown", (event) => {
-  const isRunShortcut = (event.ctrlKey || event.metaKey) && event.key === "Enter";
-  if (isRunShortcut) {
-    event.preventDefault();
-    runCode();
-  }
-});
-
-if (dataFileInput && datasetHint) {
-  dataFileInput.addEventListener("change", () => {
-    const count = dataFileInput.files?.length || 0;
-    datasetHint.textContent = count
-      ? `${count} file(s) selected. Click "Attach to Python" to make them available in runtime.`
-      : "Uploaded files are available in Python at /home/pyodide/data/filename.";
-  });
+.viz-container {
+  display: grid;
+  gap: 12px;
 }
 
-window.addEventListener("load", () => {
-  initializeRuntime();
-  document.getElementById("compiler")?.scrollIntoView({ behavior: "instant", block: "start" });
+.viz-placeholder {
+  margin: 0;
+  color: var(--muted);
+}
 
-  if (window.adsbygoogle) {
-    document.querySelectorAll(".adsbygoogle").forEach(() => {
-      try {
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-      } catch (error) {
-        console.warn("AdSense placeholder is not active yet.", error);
-      }
-    });
+.viz-image {
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-wallpaper {
+    animation: none;
   }
-});
+}
