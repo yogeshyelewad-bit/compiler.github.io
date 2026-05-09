@@ -31,6 +31,7 @@
 </script>
 </head>
 <body>
+  <canvas class="live-wallpaper-canvas" id="liveWallpaperCanvas" aria-hidden="true"></canvas>
   <div class="live-wallpaper" aria-hidden="true"></div>
   <div class="noise"></div>
 
@@ -100,58 +101,6 @@
 
     <main>
       <section class="compiler-section reveal" id="compiler">
-        <div class="section-heading">
-          <p class="eyebrow">Compiler</p>
-          <h2>Browser-based Python playground</h2>
-          <p class="section-text">
-            This runs Python in the browser and supports common data-analysis workflows (NumPy, pandas, matplotlib, and seaborn when available in Pyodide).
-          </p>
-          <p class="section-text">
-            Unique value: this compiler can render chart output inside the same page so learners can see both code output and visualization together.
-          </p>
-        </div>
-
-        <div class="quick-guide card">
-          <div class="guide-step">
-            <span>1</span>
-            <div>
-              <strong>Write or paste Python</strong>
-              <p>Use the editor below for your script or homework practice.</p>
-            </div>
-          </div>
-          <div class="guide-step">
-            <span>2</span>
-            <div>
-              <strong>Run it instantly</strong>
-              <p>Click the run button and the browser executes the code for you.</p>
-            </div>
-          </div>
-          <div class="guide-step">
-            <span>3</span>
-            <div>
-              <strong>Understand the result</strong>
-              <p>Read output, errors, and improvement tips in simple language.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="card support-card">
-          <h3>Supported libraries in this website compiler</h3>
-          <p class="panel-note">Users can run these libraries directly in the browser runtime:</p>
-          <ul class="check-list support-list">
-            <li><strong>Python standard library</strong> (core language features and built-in modules)</li>
-            <li><strong>NumPy</strong> for numerical and array operations</li>
-            <li><strong>pandas</strong> for table/dataframe analysis</li>
-            <li><strong>Matplotlib</strong> for charts and plots</li>
-            <li><strong>seaborn</strong> for statistical visualization (when available in runtime)</li>
-            <li><strong>scikit-learn</strong> for basic machine-learning examples</li>
-          <h3>How to use ? </h3>
-            <li><strong>Step 1: </strong> Click on Choose file and select file</li>
-            <li><strong>Step 2: </strong> IMP: CLICK on Attach to Python</li>
-            <li><strong>Step 3: </strong> Use file path as Example-> df = pd.read_csv("/home/pyodide/data/YourFilename.csv")</li>
-          </ul>
-        </div>
-
         <div class="workspace">
           <div class="editor-panel card">
             <div class="panel-header">
@@ -228,6 +177,61 @@
             </section>
           </div>
         </div>
+
+        <div class="section-heading">
+          <p class="eyebrow">Compiler</p>
+          <h2>Browser-based Python playground</h2>
+          <p class="section-text">
+            This runs Python in the browser and supports common data-analysis workflows (NumPy, pandas, matplotlib, and seaborn when available in Pyodide).
+          </p>
+          <p class="section-text">
+            Unique value: this compiler can render chart output inside the same page so learners can see both code output and visualization together.
+          </p>
+        </div>
+
+        <div class="quick-guide card">
+          <div class="guide-step">
+            <span>1</span>
+            <div>
+              <strong>Write or paste Python</strong>
+              <p>Use the editor below for your script or homework practice.</p>
+            </div>
+          </div>
+          <div class="guide-step">
+            <span>2</span>
+            <div>
+              <strong>Run it instantly</strong>
+              <p>Click the run button and the browser executes the code for you.</p>
+            </div>
+          </div>
+          <div class="guide-step">
+            <span>3</span>
+            <div>
+              <strong>Understand the result</strong>
+              <p>Read output, errors, and improvement tips in simple language.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card support-card">
+          <h3>Supported libraries in this website compiler</h3>
+          <p class="panel-note">Users can run these libraries directly in the browser runtime:</p>
+          <ul class="check-list support-list">
+            <li><strong>Python standard library</strong> (core language features and built-in modules)</li>
+            <li><strong>NumPy</strong> for numerical and array operations</li>
+            <li><strong>pandas</strong> for table/dataframe analysis</li>
+            <li><strong>Matplotlib</strong> for charts and plots</li>
+            <li><strong>seaborn</strong> for statistical visualization (when available in runtime)</li>
+            <li><strong>scikit-learn</strong> for basic machine-learning examples</li>
+          </ul>
+          <h3>How to use?</h3>
+          <ul class="check-list support-list">
+            <li><strong>Step 1:</strong> Click Choose file and select your dataset.</li>
+            <li><strong>Step 2:</strong> Click <strong>Attach to Python</strong>.</li>
+            <li><strong>Step 3:</strong> Use path like <code>df = pd.read_csv("/home/pyodide/data/YourFilename.csv")</code>.</li>
+          </ul>
+        </div>
+
       </section>
 
       <section class="info-section reveal" id="info">
@@ -240,6 +244,14 @@
         </div>
 
         <div class="info-grid">
+          <article class="card info-card">
+            <h3>Who this is for</h3>
+            <p>Students, beginners, and creators who want an easy Python sandbox in the browser.</p>
+          </article>
+          <article class="card info-card">
+            <h3>What it runs</h3>
+            <p>Pure Python scripts with Pyodide, including readable output and simplified error help.</p>
+          </article>
           <article class="card info-card">
             <h3>How to use</h3>
             <p>Type code, run it, view output, and improve with guidance.</p>
