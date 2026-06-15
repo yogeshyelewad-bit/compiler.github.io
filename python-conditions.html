@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="author" content="YBY Compiler">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Master Python if-else conditions: learn decision making in Python with if, elif, and else statements. Comprehensive beginner's guide.">
+  <title>Python If-Else Conditions | Decision Making | YBY Compiler</title>
+  <link rel="canonical" href="/python-conditions.html">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Python If-Else Conditions: Complete Beginner's Guide",
+    "description": "Learn decision making and conditional statements in Python",
+    "author": {"@type": "Organization", "name": "YBY Compiler"}
+  }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8709136418584975" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="site-shell">
+    <header class="hero">
+      <nav class="topbar">
+        <a class="brand" href="/">
+          <span class="brand-mark">Y</span>
+          <span class="brand-copy"><strong>YBY Compiler</strong></span>
+        </a>
+        <div class="nav-links">
+          <a href="/">Home</a>
+          <a href="/#blog">Tutorials</a>
+          <a href="about.html">About</a>
+        </div>
+      </nav>
+    </header>
+
+    <main style="max-width: 900px; margin: 0 auto; padding: 40px 20px;">
+      <article>
+        <h1>Python If-Else Conditions: A Complete Beginner's Guide</h1>
+        <p style="opacity: 0.8; margin-bottom: 30px;">Master conditional statements and decision making in Python. Learn if, elif, and else with practical examples.</p>
+
+        <section>
+          <h2>What Are Conditionals?</h2>
+          <p>Conditionals let programs make decisions. "If it's raining, take an umbrella. Otherwise, don't." This is conditional logic.</p>
+          <p>Without conditionals, programs would execute the same steps every time, regardless of the situation. Conditionals make programs intelligent and responsive.</p>
+        </section>
+
+        <section>
+          <h2>The if Statement</h2>
+          <p>The basic if statement executes code only if a condition is true:</p>
+          <div style="background-color: rgba(0, 0, 0, 0.2); padding: 15px; border-radius: 5px; margin: 15px 0; font-family: 'JetBrains Mono', monospace; overflow-x: auto;">
+            age = 18<br>
+            if age >= 18:<br>
+                print("You are an adult")
+          </div>
+          <p>If the condition is true, the indented code runs. If false, it's skipped.</p>
+        </section>
+
+        <section>
+          <h2>Comparison Operators</h2>
+          <p>Comparison operators test relationships between values:</p>
+          <ul>
+            <li><strong>==</strong> Equal to</li>
+            <li><strong>!=</strong> Not equal to</li>
+            <li><strong>&lt;</strong> Less than</li>
+            <li><strong>&gt;</strong> Greater than</li>
+            <li><strong>&lt;=</strong> Less than or equal to</li>
+            <li><strong>&gt;=</strong> Greater than or equal to</li>
+          </ul>
+          <div style="background-color: rgba(0, 0, 0, 0.2); padding: 15px; border-radius: 5px; margin: 15px 0; font-family: 'JetBrains Mono', monospace; overflow-x: auto;">
+            x = 10<br>
+            print(x == 10)  # True<br>
+            print(x != 5)   # True<br>
+            print(x < 15)   # True
+          </div>
+        </section>
+
+        <section>
+          <h2>if-else Statements</h2>
+          <p>The else clause executes when the condition is false:</p>
+          <div style="background-color: rgba(0, 0, 0, 0.2); padding: 15px; border-radius: 5px; margin: 15px 0; font-family: 'JetBrains Mono', monospace; overflow-x: auto;">
+            age = 15<br>
+            if age >= 18:<br>
+                print("You are an adult")<br>
+            else:<br>
+                print("You are a minor")
+          </div>
+        </section>
+
+        <section>
+          <h2>if-elif-else Statements</h2>
+          <p>Check multiple conditions with elif (else if):</p>
+          <div style="background-color: rgba(0, 0, 0, 0.2); padding: 15px; border-radius: 5px; margin: 15px 0; font-family: 'JetBrains Mono', monospace; overflow-x: auto;">
+            score = 85<br>
+            if score >= 90:<br>
+                print("Grade: A")<br>
+            elif score >= 80:<br>
+                print("Grade: B")<br>
+            elif score >= 70:<br>
+                print("Grade: C")<br>
+            else:<br>
+                print("Grade: F")
+          </div>
+          <p>Python checks each condition in order. The first true condition executes, then the rest are skipped.</p>
+        </section>
+
+        <section>
+          <h2>Logical Operators</h2>
+          <h3>and Operator</h3>
+          <p>Both conditions must be true:</p>
+          <div style="background-color: rgba(0, 0, 0, 0.2); padding: 15px; border-radius: 5px; margin: 15px 0; font-family: 'JetBrains Mono', monospace; overflow-x: auto;">
+            age = 25<br>
+            has_license = True<br>
+            if age >= 18 and has_license:<br>
+                print("You can drive")
+          </div>
+          <h3>or Operator</h3>
+          <p>At least one condition must be true:</p>
+          <div style="background-color: rgba(0, 0, 0, 0.2); padding: 15px; border-radius: 5px; margin: 15px 0; font-family: 'JetBrains Mono', monospace; overflow-x: auto;">
+            day = "Saturday"<br>
+            if day == "Saturday" or day == "Sunday":<br>
+                print("It's the weekend!")
+          </div>
+          <h3>not Operator</h3>
+          <p>Reverses a boolean:</p>
+          <div style="background-color: rgba(0, 0, 0, 0.2); padding: 15px; border-radius: 5px; margin: 15px 0; font-family: 'JetBrains Mono', monospace; overflow-x: auto;">
+            is_raining = False<br>
+            if not is_raining:<br>
+                print("No rain today!")
+          </div>
+        </section>
+
+        <section>
+          <h2>Practical Examples</h2>
+          <h3>Example 1: Voting Eligibility</h3>
+          <div style="background-color: rgba(0, 0, 0, 0.2); padding: 15px; border-radius: 5px; margin: 15px 0; font-family: 'JetBrains Mono', monospace; overflow-x: auto;">
+            age = 17<br>
+            if age >= 18:<br>
+                print("You can vote")<br>
+            else:<br>
+                print("You must be 18 to vote")
+          </div>
+          <h3>Example 2: Password Validation</h3>
+          <div style="background-color: rgba(0, 0, 0, 0.2); padding: 15px; border-radius: 5px; margin: 15px 0; font-family: 'JetBrains Mono', monospace; overflow-x: auto;">
+            password = "secret123"<br>
+            correct_password = "secret123"<br>
+            if password == correct_password:<br>
+                print("Access granted")<br>
+            else:<br>
+                print("Access denied")
+          </div>
+        </section>
+
+        <div style="background-color: rgba(255, 255, 255, 0.05); padding: 30px; border-radius: 8px; margin: 40px 0; text-align: center;">
+          <h3>Ready to Practice?</h3>
+          <p>Try conditions in <a href="/">YBY Compiler</a>.</p>
+          <a href="/" class="button button-primary" style="display: inline-block; margin-top: 15px;">Open Compiler</a>
+        </div>
+      </article>
+
+      <div class="adsense-section">
+        <div class="card ad-card" aria-label="Advertisement">
+          <ins class="adsbygoogle"
+               style="display:block"
+               data-ad-client="ca-pub-8709136418584975"
+               data-ad-format="auto"
+               data-full-width-responsive="true"></ins>
+        </div>
+      </div>
+
+      <footer style="margin-top: 60px; padding-top: 30px; border-top: 1px solid rgba(255, 255, 255, 0.1); text-align: center;">
+        <p><a href="/">Home</a> | <a href="about.html">About</a> | <a href="/#blog">All Tutorials</a></p>
+        <p style="margin-top: 20px; opacity: 0.7;">© 2025 YBY Compiler. Making programming education accessible.</p>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+</body>
+</html>

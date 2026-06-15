@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Python Data Types Tutorial - Master strings, lists, dictionaries, and more">
+    <title>Python Data Types Tutorial | YBY Compiler</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Python Data Types Tutorial",
+      "description": "Comprehensive guide to Python data types",
+      "author": {"@type": "Organization", "name": "YBY Compiler"}
+    }
+    </script>
+</head>
+<body>
+    <div class="blog-container">
+        <h1>Python Data Types Tutorial</h1>
+        <p class="article-meta">Updated: June 14, 2026 | Reading time: 8 minutes</p>
+
+        <section class="tutorial-section">
+            <h2>Introduction to Data Types</h2>
+            <p>Data types define what kind of value a variable can hold. Python supports various built-in data types that help you work with different kinds of information.</p>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Strings (str)</h2>
+            <p>Strings are sequences of characters enclosed in quotes:</p>
+            <pre>name = "John"          # double quotes
+city = 'New York'      # single quotes
+sentence = """Multi
+line
+string"""</pre>
+            <p><strong>String Methods:</strong></p>
+            <ul>
+                <li><code>.upper()</code> - Convert to uppercase</li>
+                <li><code>.lower()</code> - Convert to lowercase</li>
+                <li><code>.strip()</code> - Remove whitespace</li>
+                <li><code>.split()</code> - Split into list</li>
+                <li><code>.replace()</code> - Replace characters</li>
+            </ul>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Numbers - Integers (int)</h2>
+            <p>Integers are whole numbers without decimals:</p>
+            <pre>age = 25
+count = -10
+zero = 0
+large_number = 1_000_000  # underscores for readability</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Numbers - Floats (float)</h2>
+            <p>Floats are numbers with decimal points:</p>
+            <pre>price = 19.99
+pi = 3.14159
+scientific = 1.5e-10
+negative = -3.14</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Booleans (bool)</h2>
+            <p>Booleans represent True or False values:</p>
+            <pre>is_student = True
+is_graduated = False
+is_active = 1 > 0  # Result: True
+print(type(True))  # <class 'bool'></pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Lists (list)</h2>
+            <p>Lists store multiple items in a single variable, ordered and changeable:</p>
+            <pre>fruits = ["apple", "banana", "cherry"]
+numbers = [1, 2, 3, 4, 5]
+mixed = [1, "hello", 3.14, True]
+
+# Access items
+first = fruits[0]  # "apple"
+last = fruits[-1]  # "cherry"
+
+# Modify items
+fruits[0] = "orange"
+
+# Add items
+fruits.append("grape")
+fruits.extend(["kiwi", "mango"])</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Tuples (tuple)</h2>
+            <p>Tuples are like lists but immutable (cannot be changed):</p>
+            <pre>colors = ("red", "green", "blue")
+coordinates = (10, 20)
+
+# Access items
+first_color = colors[0]  # "red"
+
+# Tuples cannot be modified
+# colors[0] = "yellow"  # This will cause an error</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Dictionaries (dict)</h2>
+            <p>Dictionaries store data as key-value pairs:</p>
+            <pre>person = {
+    "name": "Alice",
+    "age": 30,
+    "city": "New York",
+    "is_student": False
+}
+
+# Access values
+name = person["name"]     # "Alice"
+age = person.get("age")   # 30
+
+# Add/modify items
+person["email"] = "alice@example.com"
+person["age"] = 31
+
+# Remove items
+del person["city"]
+person.pop("is_student")</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Sets (set)</h2>
+            <p>Sets are unordered collections of unique items:</p>
+            <pre>colors = {"red", "green", "blue"}
+numbers = {1, 2, 3, 3, 4}  # Duplicates removed
+
+# Check membership
+if "red" in colors:
+    print("red is in the set")
+
+# Add items
+colors.add("yellow")
+
+# Remove items
+colors.remove("green")</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Type Checking</h2>
+            <p>Use the <code>type()</code> function to check data types:</p>
+            <pre>print(type("hello"))      # <class 'str'>
+print(type(42))           # <class 'int'>
+print(type(3.14))         # <class 'float'>
+print(type(True))         # <class 'bool'>
+print(type([1, 2, 3]))    # <class 'list'>
+print(type({1, 2, 3}))    # <class 'set'>
+print(type({"a": 1}))     # <class 'dict'></pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Practice Exercises</h2>
+            <pre># Exercise 1: Create a list and print elements
+students = ["Alice", "Bob", "Charlie"]
+for student in students:
+    print(student)
+
+# Exercise 2: Create a dictionary and access values
+book = {
+    "title": "Python Basics",
+    "pages": 350,
+    "author": "John Smith"
+}
+print(book["title"])
+
+# Exercise 3: Modify a list
+numbers = [1, 2, 3]
+numbers.append(4)
+print(numbers)</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Key Takeaways</h2>
+            <ul>
+                <li>Strings store text data</li>
+                <li>Numbers can be integers or floats</li>
+                <li>Booleans are True/False values</li>
+                <li>Lists are mutable ordered collections</li>
+                <li>Tuples are immutable ordered collections</li>
+                <li>Dictionaries store key-value pairs</li>
+                <li>Sets store unique unordered items</li>
+                <li>Use type() to check data types</li>
+            </ul>
+        </section>
+
+        <div class="cta-section">
+            <p><strong>Ready to practice?</strong> <a href="index.html#compiler" class="button button-primary">Try YBY Compiler Now</a></p>
+        </div>
+
+        <a href="index.html" class="back-link">← Back to Home</a>
+    </div>
+</body>
+</html>

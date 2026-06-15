@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Python Variables Tutorial - Learn how to create and use variables in Python">
+    <title>Python Variables Tutorial | YBY Compiler</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Python Variables Tutorial",
+      "description": "Learn how to create and use variables in Python programming",
+      "author": {"@type": "Organization", "name": "YBY Compiler"}
+    }
+    </script>
+</head>
+<body>
+    <div class="blog-container">
+        <h1>Python Variables Tutorial</h1>
+        <p class="article-meta">Updated: June 14, 2026 | Reading time: 5 minutes</p>
+
+        <section class="tutorial-section">
+            <h2>What Are Variables?</h2>
+            <p>Variables are containers for storing data values. In Python, a variable is created the moment you assign a value to it. You don't need to declare the type - Python figures it out automatically.</p>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Creating Variables</h2>
+            <p>To create a variable, you use the assignment operator (=). Here's the syntax:</p>
+            <pre>variable_name = value</pre>
+            <p>Example:</p>
+            <pre>name = "John"
+age = 25
+height = 5.9
+is_student = True</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Variable Naming Rules</h2>
+            <p>Follow these rules when naming variables:</p>
+            <ul>
+                <li>Must start with a letter (a-z, A-Z) or underscore (_)</li>
+                <li>Cannot start with a number</li>
+                <li>Can only contain alphanumeric characters and underscores (A-z, 0-9, and _)</li>
+                <li>Variable names are case-sensitive (age, Age, and AGE are different)</li>
+                <li>Use descriptive names that explain what the variable stores</li>
+            </ul>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Valid and Invalid Variable Names</h2>
+            <pre>✓ Valid:
+my_name = "Alice"
+user_age = 30
+_private_var = 100
+CONSTANT_VALUE = 3.14
+
+✗ Invalid:
+123abc = 50  (starts with number)
+my-var = 10  (contains hyphen)
+my var = 20  (contains space)
+class = 5    (reserved keyword)</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Data Types</h2>
+            <p>Python has several built-in data types:</p>
+            <ul>
+                <li><strong>str:</strong> Text data - "Hello World"</li>
+                <li><strong>int:</strong> Integer numbers - 42</li>
+                <li><strong>float:</strong> Decimal numbers - 3.14</li>
+                <li><strong>bool:</strong> Boolean values - True or False</li>
+                <li><strong>list:</strong> Ordered collection - [1, 2, 3]</li>
+                <li><strong>dict:</strong> Key-value pairs - {"name": "John"}</li>
+            </ul>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Type Conversion</h2>
+            <p>Convert between data types using built-in functions:</p>
+            <pre>x = 42           # integer
+y = str(x)       # convert to string: "42"
+z = float(x)     # convert to float: 42.0
+a = int("100")   # convert to integer: 100</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Practical Example</h2>
+            <pre>name = "Alice"
+age = 25
+gpa = 3.85
+is_graduated = False
+
+print(f"Name: {name}")
+print(f"Age: {age}")
+print(f"GPA: {gpa}")
+print(f"Graduated: {is_graduated}")</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Practice Exercise</h2>
+            <p>Try this on the YBY Compiler:</p>
+            <pre>student_name = "Your Name"
+student_id = 12345
+gpa = 3.9
+
+print(f"Student: {student_name}")
+print(f"ID: {student_id}")
+print(f"GPA: {gpa}")</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Key Takeaways</h2>
+            <ul>
+                <li>Variables store data and can be reused</li>
+                <li>Python automatically determines variable type</li>
+                <li>Use descriptive names for clarity</li>
+                <li>Follow naming conventions and rules</li>
+                <li>You can convert between data types when needed</li>
+            </ul>
+        </section>
+
+        <div class="cta-section">
+            <p><strong>Ready to practice?</strong> <a href="index.html#compiler" class="button button-primary">Try YBY Compiler Now</a></p>
+        </div>
+
+        <a href="index.html" class="back-link">← Back to Home</a>
+    </div>
+</body>
+</html>

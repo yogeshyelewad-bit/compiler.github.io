@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Python Loops Tutorial - Learn for loops and while loops">
+    <title>Python Loops Tutorial | YBY Compiler</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Python Loops Tutorial",
+      "description": "Complete guide to for and while loops in Python",
+      "author": {"@type": "Organization", "name": "YBY Compiler"}
+    }
+    </script>
+</head>
+<body>
+    <div class="blog-container">
+        <h1>Python Loops Tutorial</h1>
+        <p class="article-meta">Updated: June 14, 2026 | Reading time: 7 minutes</p>
+
+        <section class="tutorial-section">
+            <h2>What Are Loops?</h2>
+            <p>Loops allow you to execute a block of code multiple times. Python has two types of loops: <strong>for loops</strong> and <strong>while loops</strong>.</p>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>For Loops</h2>
+            <p>For loops iterate over a sequence (list, tuple, string, etc.):</p>
+            <pre>fruits = ["apple", "banana", "cherry"]
+for fruit in fruits:
+    print(fruit)</pre>
+            <p><strong>Output:</strong></p>
+            <pre>apple
+banana
+cherry</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>For Loop with range()</h2>
+            <p>The <code>range()</code> function generates a sequence of numbers:</p>
+            <pre># range(stop)
+for i in range(5):
+    print(i)  # Prints 0, 1, 2, 3, 4
+
+# range(start, stop)
+for i in range(1, 5):
+    print(i)  # Prints 1, 2, 3, 4
+
+# range(start, stop, step)
+for i in range(0, 10, 2):
+    print(i)  # Prints 0, 2, 4, 6, 8</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>While Loops</h2>
+            <p>While loops execute as long as a condition is true:</p>
+            <pre>count = 0
+while count < 5:
+    print(count)
+    count += 1</pre>
+            <p><strong>Output:</strong></p>
+            <pre>0
+1
+2
+3
+4</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Loop Control Statements</h2>
+            <p><strong>break:</strong> Exits the loop immediately</p>
+            <pre>for i in range(10):
+    if i == 5:
+        break
+    print(i)  # Prints 0, 1, 2, 3, 4</pre>
+            <p><strong>continue:</strong> Skips the current iteration</p>
+            <pre>for i in range(5):
+    if i == 2:
+        continue
+    print(i)  # Prints 0, 1, 3, 4</pre>
+            <p><strong>pass:</strong> Does nothing (placeholder)</p>
+            <pre>for i in range(5):
+    if i == 2:
+        pass  # Do nothing
+    print(i)</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Nested Loops</h2>
+            <p>Loops inside loops:</p>
+            <pre>for i in range(3):
+    for j in range(2):
+        print(f"i={i}, j={j}")</pre>
+            <p><strong>Output:</strong></p>
+            <pre>i=0, j=0
+i=0, j=1
+i=1, j=0
+i=1, j=1
+i=2, j=0
+i=2, j=1</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Loop with else</h2>
+            <p>The <code>else</code> block executes after the loop completes (not if broken):</p>
+            <pre>for i in range(5):
+    print(i)
+else:
+    print("Loop completed!")
+
+# With break - else is skipped
+for i in range(5):
+    if i == 3:
+        break
+else:
+    print("This won't print")</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Enumerate Function</h2>
+            <p>Get both index and value:</p>
+            <pre>fruits = ["apple", "banana", "cherry"]
+for index, fruit in enumerate(fruits):
+    print(f"{index}: {fruit}")</pre>
+            <p><strong>Output:</strong></p>
+            <pre>0: apple
+1: banana
+2: cherry</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Practical Examples</h2>
+            <h3>Example 1: Sum Numbers</h3>
+            <pre>total = 0
+for i in range(1, 6):
+    total += i
+print(f"Sum: {total}")  # Sum: 15</pre>
+
+            <h3>Example 2: Multiplication Table</h3>
+            <pre>num = 5
+for i in range(1, 11):
+    print(f"{num} x {i} = {num * i}")</pre>
+
+            <h3>Example 3: Count Vowels</h3>
+            <pre>text = "Hello World"
+vowels = "aeiouAEIOU"
+count = 0
+for char in text:
+    if char in vowels:
+        count += 1
+print(f"Vowels: {count}")</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Common Loop Patterns</h2>
+            <p><strong>Pattern 1: Sum all numbers in a list</strong></p>
+            <pre>numbers = [1, 2, 3, 4, 5]
+total = 0
+for num in numbers:
+    total += num
+print(total)</pre>
+
+            <p><strong>Pattern 2: Find maximum value</strong></p>
+            <pre>numbers = [10, 5, 20, 15]
+max_num = numbers[0]
+for num in numbers:
+    if num > max_num:
+        max_num = num
+print(max_num)</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Key Takeaways</h2>
+            <ul>
+                <li>For loops iterate over sequences</li>
+                <li>While loops run while a condition is true</li>
+                <li><code>break</code> exits a loop</li>
+                <li><code>continue</code> skips to the next iteration</li>
+                <li>Loops can be nested</li>
+                <li><code>range()</code> generates number sequences</li>
+                <li><code>enumerate()</code> provides index and value</li>
+            </ul>
+        </section>
+
+        <div class="cta-section">
+            <p><strong>Ready to practice?</strong> <a href="index.html#compiler" class="button button-primary">Try YBY Compiler Now</a></p>
+        </div>
+
+        <a href="index.html" class="back-link">← Back to Home</a>
+    </div>
+</body>
+</html>

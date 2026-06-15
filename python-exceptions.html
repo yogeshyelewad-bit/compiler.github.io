@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Python Exception Handling Tutorial - Handle errors gracefully">
+    <title>Python Exception Handling Tutorial | YBY Compiler</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Python Exception Handling Tutorial",
+      "description": "Learn how to handle errors and exceptions in Python",
+      "author": {"@type": "Organization", "name": "YBY Compiler"}
+    }
+    </script>
+</head>
+<body>
+    <div class="blog-container">
+        <h1>Python Exception Handling Tutorial</h1>
+        <p class="article-meta">Updated: June 14, 2026 | Reading time: 7 minutes</p>
+
+        <section class="tutorial-section">
+            <h2>What Are Exceptions?</h2>
+            <p>Exceptions are errors that occur during program execution. Instead of crashing, Python allows you to handle these exceptions gracefully using try-except blocks.</p>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Try-Except Block</h2>
+            <p>The basic syntax for handling exceptions:</p>
+            <pre>try:
+    # Code that might raise an exception
+    x = 10 / 0
+except ZeroDivisionError:
+    print("Cannot divide by zero!")</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Multiple Except Blocks</h2>
+            <p>Handle different types of exceptions:</p>
+            <pre>try:
+    num = int(input("Enter a number: "))
+    result = 10 / num
+    print(result)
+except ValueError:
+    print("Invalid input! Please enter a number.")
+except ZeroDivisionError:
+    print("Cannot divide by zero!")</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Common Exception Types</h2>
+            <ul>
+                <li><strong>ValueError:</strong> Invalid value passed to a function</li>
+                <li><strong>TypeError:</strong> Operation on wrong type</li>
+                <li><strong>IndexError:</strong> Index out of range</li>
+                <li><strong>KeyError:</strong> Dictionary key not found</li>
+                <li><strong>FileNotFoundError:</strong> File doesn't exist</li>
+                <li><strong>ZeroDivisionError:</strong> Division by zero</li>
+                <li><strong>AttributeError:</strong> Attribute doesn't exist</li>
+                <li><strong>ImportError:</strong> Module not found</li>
+            </ul>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Generic Exception Handling</h2>
+            <p>Catch any exception:</p>
+            <pre>try:
+    x = 10 / 0
+except Exception as e:
+    print(f"An error occurred: {e}")</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Else Block</h2>
+            <p>Code in the else block runs if no exception occurs:</p>
+            <pre>try:
+    num = int("42")
+except ValueError:
+    print("Invalid number")
+else:
+    print(f"The number is: {num}")</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Finally Block</h2>
+            <p>The finally block always executes, regardless of whether an exception occurred:</p>
+            <pre>try:
+    file = open("data.txt", "r")
+    content = file.read()
+except FileNotFoundError:
+    print("File not found!")
+finally:
+    file.close()  # Always executed</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Raising Exceptions</h2>
+            <p>Raise exceptions manually using the <code>raise</code> keyword:</p>
+            <pre>def check_age(age):
+    if age < 0:
+        raise ValueError("Age cannot be negative")
+    return f"Age is {age}"
+
+try:
+    print(check_age(-5))
+except ValueError as e:
+    print(f"Error: {e}")</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Custom Exceptions</h2>
+            <p>Create your own exception classes:</p>
+            <pre>class InsufficientBalance(Exception):
+    pass
+
+class BankAccount:
+    def __init__(self, balance):
+        self.balance = balance
+    
+    def withdraw(self, amount):
+        if amount > self.balance:
+            raise InsufficientBalance("Not enough money!")
+        self.balance -= amount
+
+try:
+    account = BankAccount(100)
+    account.withdraw(150)
+except InsufficientBalance as e:
+    print(f"Error: {e}")</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Practical Examples</h2>
+            <h3>Example 1: Safe Division</h3>
+            <pre>def safe_divide(a, b):
+    try:
+        return a / b
+    except ZeroDivisionError:
+        return "Cannot divide by zero"
+    except TypeError:
+        return "Invalid input types"
+
+print(safe_divide(10, 2))   # 5.0
+print(safe_divide(10, 0))   # Cannot divide by zero
+print(safe_divide("10", 2)) # Invalid input types</pre>
+
+            <h3>Example 2: Validate User Input</h3>
+            <pre>def get_positive_number():
+    while True:
+        try:
+            num = int(input("Enter a positive number: "))
+            if num < 0:
+                raise ValueError("Number must be positive")
+            return num
+        except ValueError as e:
+            print(f"Invalid input: {e}")</pre>
+
+            <h3>Example 3: Safe List Access</h3>
+            <pre>def get_item(lst, index):
+    try:
+        return lst[index]
+    except IndexError:
+        return "Index out of range"
+    except TypeError:
+        return "Invalid index"
+
+my_list = [1, 2, 3]
+print(get_item(my_list, 0))   # 1
+print(get_item(my_list, 10))  # Index out of range</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Best Practices</h2>
+            <ul>
+                <li>Catch specific exceptions, not generic ones</li>
+                <li>Always clean up resources in the finally block</li>
+                <li>Provide meaningful error messages</li>
+                <li>Don't catch and ignore exceptions silently</li>
+                <li>Log exceptions for debugging</li>
+                <li>Use custom exceptions for application-specific errors</li>
+            </ul>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Key Takeaways</h2>
+            <ul>
+                <li>Use try-except to handle exceptions</li>
+                <li>Catch specific exceptions when possible</li>
+                <li>Use else for code that runs if no exception occurs</li>
+                <li>Use finally for cleanup code</li>
+                <li>Raise exceptions to signal errors</li>
+                <li>Create custom exceptions for your application</li>
+                <li>Write meaningful error messages</li>
+            </ul>
+        </section>
+
+        <div class="cta-section">
+            <p><strong>Ready to practice?</strong> <a href="index.html#compiler" class="button button-primary">Try YBY Compiler Now</a></p>
+        </div>
+
+        <a href="index.html" class="back-link">← Back to Home</a>
+    </div>
+</body>
+</html>

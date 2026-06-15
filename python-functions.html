@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Python Functions Tutorial - Create and use reusable code blocks">
+    <title>Python Functions Tutorial | YBY Compiler</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Python Functions Tutorial",
+      "description": "Learn how to create and use functions in Python",
+      "author": {"@type": "Organization", "name": "YBY Compiler"}
+    }
+    </script>
+</head>
+<body>
+    <div class="blog-container">
+        <h1>Python Functions Tutorial</h1>
+        <p class="article-meta">Updated: June 14, 2026 | Reading time: 8 minutes</p>
+
+        <section class="tutorial-section">
+            <h2>What Are Functions?</h2>
+            <p>Functions are reusable blocks of code that perform specific tasks. They help you organize code, avoid repetition, and make programs easier to maintain.</p>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Creating Functions</h2>
+            <p>Use the <code>def</code> keyword to define a function:</p>
+            <pre>def greet():
+    print("Hello, World!")
+
+# Call the function
+greet()</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Functions with Parameters</h2>
+            <p>Parameters are variables that functions accept:</p>
+            <pre>def greet(name):
+    print(f"Hello, {name}!")
+
+greet("Alice")  # Output: Hello, Alice!
+greet("Bob")    # Output: Hello, Bob!</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Return Values</h2>
+            <p>Functions can return values using the <code>return</code> keyword:</p>
+            <pre>def add(a, b):
+    return a + b
+
+result = add(5, 3)
+print(result)  # Output: 8</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Multiple Parameters</h2>
+            <p>Functions can have multiple parameters:</p>
+            <pre>def calculate(x, y, operation):
+    if operation == "add":
+        return x + y
+    elif operation == "subtract":
+        return x - y
+    elif operation == "multiply":
+        return x * y
+    else:
+        return None
+
+print(calculate(10, 5, "add"))       # 15
+print(calculate(10, 5, "multiply"))  # 50</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Default Parameters</h2>
+            <p>Set default values for parameters:</p>
+            <pre>def greet(name="Guest"):
+    print(f"Hello, {name}!")
+
+greet()           # Output: Hello, Guest!
+greet("Alice")    # Output: Hello, Alice!</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Keyword Arguments</h2>
+            <p>Pass arguments by name:</p>
+            <pre>def describe_person(name, age, city):
+    print(f"{name} is {age} years old and lives in {city}")
+
+# Positional arguments
+describe_person("Alice", 30, "New York")
+
+# Keyword arguments
+describe_person(age=30, name="Bob", city="London")</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Variable-Length Arguments</h2>
+            <p><strong>*args:</strong> Accept any number of positional arguments</p>
+            <pre>def sum_numbers(*args):
+    total = 0
+    for num in args:
+        total += num
+    return total
+
+print(sum_numbers(1, 2, 3))        # 6
+print(sum_numbers(1, 2, 3, 4, 5))  # 15</pre>
+            <p><strong>**kwargs:</strong> Accept any number of keyword arguments</p>
+            <pre>def print_info(**kwargs):
+    for key, value in kwargs.items():
+        print(f"{key}: {value}")
+
+print_info(name="Alice", age=30, city="NYC")</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Docstrings</h2>
+            <p>Add documentation to your functions:</p>
+            <pre>def calculate_area(length, width):
+    """
+    Calculate the area of a rectangle.
+    
+    Parameters:
+    length (float): The length of the rectangle
+    width (float): The width of the rectangle
+    
+    Returns:
+    float: The area of the rectangle
+    """
+    return length * width
+
+print(calculate_area(5, 3))  # 15</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Scope and Lifetime</h2>
+            <p>Variables have local and global scope:</p>
+            <pre>x = 10  # Global variable
+
+def my_function():
+    y = 20  # Local variable
+    print(x)  # Can access global x
+    print(y)  # Can access local y
+
+my_function()  # Output: 10, 20
+print(x)       # Output: 10
+# print(y)     # Error: y is not defined</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Practical Examples</h2>
+            <h3>Example 1: Check if number is prime</h3>
+            <pre>def is_prime(n):
+    if n < 2:
+        return False
+    for i in range(2, n):
+        if n % i == 0:
+            return False
+    return True
+
+print(is_prime(7))   # True
+print(is_prime(10))  # False</pre>
+
+            <h3>Example 2: Calculate factorial</h3>
+            <pre>def factorial(n):
+    if n == 0 or n == 1:
+        return 1
+    return n * factorial(n - 1)
+
+print(factorial(5))  # 120</pre>
+
+            <h3>Example 3: Reverse a string</h3>
+            <pre>def reverse_string(s):
+    return s[::-1]
+
+print(reverse_string("Hello"))  # olleH</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Lambda Functions</h2>
+            <p>Anonymous functions for simple operations:</p>
+            <pre>square = lambda x: x ** 2
+print(square(5))  # 25
+
+# With multiple parameters
+add = lambda x, y: x + y
+print(add(3, 4))  # 7</pre>
+        </section>
+
+        <section class="tutorial-section">
+            <h2>Key Takeaways</h2>
+            <ul>
+                <li>Define functions with the <code>def</code> keyword</li>
+                <li>Use parameters to pass data to functions</li>
+                <li>Use <code>return</code> to send values back</li>
+                <li>Set default parameter values</li>
+                <li>Use *args for variable positional arguments</li>
+                <li>Use **kwargs for variable keyword arguments</li>
+                <li>Add docstrings to document functions</li>
+                <li>Understand variable scope (local vs global)</li>
+            </ul>
+        </section>
+
+        <div class="cta-section">
+            <p><strong>Ready to practice?</strong> <a href="index.html#compiler" class="button button-primary">Try YBY Compiler Now</a></p>
+        </div>
+
+        <a href="index.html" class="back-link">← Back to Home</a>
+    </div>
+</body>
+</html>
